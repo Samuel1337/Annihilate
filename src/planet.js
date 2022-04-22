@@ -2,8 +2,8 @@ import { MovingObject } from "./moving_object";
 
 export class Planet {
     constructor(pos, color) {
-        console.log(`[${pos}] pos inside of Planet class`);
-        console.log(`[${color}] color inside of Planet class`);
+        // console.log(`[${pos}] pos inside of Planet class`);
+        // console.log(`[${color}] color inside of Planet class`);
         
         this.color = color;
         this.pos = pos;
