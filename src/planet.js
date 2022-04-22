@@ -1,24 +1,25 @@
 import { MovingObject } from "./moving_object";
 
 export class Planet {
-    constructor() {
+    constructor(pos, color) {
+        console.log(`[${pos}] pos inside of Planet class`);
+        console.log(`[${color}] color inside of Planet class`);
+        
+        this.color = color;
+        this.pos = pos;
         // this.owner = owner;
         // this.cap = owner.cap;
         // this.rate = owner.rate;
         
-        const imageIdx = Math.floor(Math.random() * (4));
-
-        console.log(this);
-        console.log("planet gets created");
-
+        const imageIdx = Math.floor(Math.random() * (12));
+        
         this.image = new Image();
         this.image.src = `./src/planets/planet_${imageIdx}.png`;
         this.frameIdx = 0;
-        // this.frame = this.frame();
-
-        console.log("image gets loaded");
+        
+        this.handleEvent();
     }
-
+    
     frame() {
         let frame = 300*this.frameIdx;
         this.frameIdx++;
@@ -27,21 +28,24 @@ export class Planet {
         }
         return frame;
     }
-
+    
     draw(ctx) {
-        console.log("planet gets drawn");
-        console.log(ctx);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        let arcPos = [this.pos[0]+50, this.pos[1]+50];
+        ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(150,150,55,0,2*Math.PI);
+        ctx.arc(...arcPos,55,0,2*Math.PI);
         ctx.closePath();
-        // ctx.fill();
-
-        ctx.drawImage(this.image, this.frame(), 0, 300, 300, 100, 100, 100, 100);
-        //                   // src_dim, src_size, ctx_pos, ctx_dim
+        ctx.fill();
+        
+        ctx.drawImage(this.image, this.frame(), 0, 300, 300, ...this.pos, 100, 100);
+        //                             src_dim,    src_size,   ctx_pos,    ctx_dim
     }
 
     animate(ctx) {
         this.draw(ctx);
+    }
+
+    handleEvent() {
+
     }
 }

@@ -6,24 +6,20 @@ const { Player } = require("./player");
 document.addEventListener("DOMContentLoaded", function () {
   // sets up the canvas and ctx
   const canvas = document.querySelector("canvas");
-  console.log(canvas);
   canvas.width = window.innerWidth - 500;
   canvas.height = window.innerHeight - 200;
+  console.log(canvas.width + " x " + canvas.height);
   const ctx = canvas.getContext("2d");
   
   //creates game and gameView
-  const game = new Game();
+  console.log(ctx);
+  const game = new Game(ctx, 3);
   new GameView(game, ctx).start();
 
   // runs render test
-  console.log(ctx);
   // renderTest(ctx);
 
   // creates a planet
-  const planet = new Planet();
-  setInterval(()=>{
-    planet.animate(ctx); 
-  }, 100);
 });
 
 function renderTest(ctx) {
