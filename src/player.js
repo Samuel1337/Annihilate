@@ -4,15 +4,15 @@ export class Player {
         this.color = color;
         this.cap = cap;
         this.rate = rate;
-        this.draw();
+        // this.draw();
     }
     draw = function draw(ctx) {
-        ctx.fillStyle = this.color;
+        // ctx.fillStyle = this.color;
         
-        ctx.beginPath();
-        ctx.arc(
-            this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
-        );
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.arc(
+        //     this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
+        // );
+        // ctx.fill();
     };
 }

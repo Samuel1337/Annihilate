@@ -12,10 +12,18 @@ body {
   flex-direction: column;
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
 h1 {
+  background-color: rgb(25, 25, 25);
   font-size: 40px;
   color: rgb(220, 167, 20);
-  font-family: "Rampart One", cursive;
+  font-family: 'Press Start 2P', cursive;
 }
 
 canvas {

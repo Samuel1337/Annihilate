@@ -1,4 +1,3 @@
-import { fill } from "core-js/core/array";
 import { Star } from "./star";
 
 export class GameView {
