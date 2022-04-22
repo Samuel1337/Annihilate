@@ -1,0 +1,25 @@
+/*!*************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/sass-loader/dist/cjs.js!./src/index.scss ***!
+  \*************************************************************************************************************************************/
+* {
+  background-color: rgb(25, 25, 25);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 40px;
+  color: rgb(220, 167, 20);
+  font-family: "Rampart One", cursive;
+}
+
+canvas {
+  background-color: black;
+  border-radius: 10px;
+  border: 1px solid rgb(220, 167, 20);
+}
