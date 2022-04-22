@@ -5,27 +5,15 @@ export class GameView {
         this.ctx = ctx;
         this.game = game;
         setInterval(()=>{
-            this.drawRandomStars();
-        }, 200);
+            this.animate();
+        }, 20);
     }
 
-    render() {
+    animate() {
         
     }
 
     start() {
         
-    }
-
-    drawRandomStars() {
-        const options = {
-            pos: "[x,y]",
-            vel: "5",
-            // dir: ,
-            radius: "5px",
-            color: "white",
-            game: this.game
-        };
-        new Star(options);
     }
 }

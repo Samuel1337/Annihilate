@@ -18,12 +18,10 @@ nav {
   flex-direction: column;
 }
 
-
 h1 {
-  background-color: rgb(25, 25, 25);
   font-size: 40px;
   color: rgb(220, 167, 20);
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
 }
 
 canvas {
