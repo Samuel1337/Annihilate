@@ -1,6 +1,6 @@
 # W9D4
 
-Initial Proposal:
+Background:
 
 My goal is to create a space themed game with two (or multiple) competing teams.
 Each team begins with one planet under their domain and their goal is to send
@@ -14,3 +14,31 @@ and handle their departure and arrival from planets, as well as casualties accor
 the collision of the elements that represent them in the canvas.
 
 Stages are randomly generated and difficulty increases at every level.
+
+Functionality:
+
+In 'Annihilate', users will be able to:
+
+- Control fleets of spaceships;
+- Conquer planets;
+- Conquer planetary systems (levels);
+- Play against one or multiple AIs;
+- Save the Earth from annihilation;
+- Annihilate enemy alien species.
+
+In addition, this project will include:
+
+- A main menu;
+- A UI that keeps track of the player's progress.
+
+Wireframe: https://wireframe.cc/lpR9Iu
+
+Technologies: Canvas API
+
+Implementation Timeline:
+
+- Friday Afternoon & Weekend: canvas and elements display;
+- Monday: Core gameplay;
+- Tuesday: Core gameplay;
+- Wednesday: Organization of levels and main menu;
+- Thursday morning: Testing and final adjustments;

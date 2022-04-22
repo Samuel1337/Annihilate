@@ -4,7 +4,8 @@
   "description": "Initial Proposal:",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
   },
   "repository": {
     "type": "git",
@@ -32,9 +33,5 @@
   },
   "browserslist": [
     "defaults"
-  ],
-  "scripts": {
-    "watch": "webpack --watch --mode=development",
-    "build": "webpack --mode=production"
-  }
+  ]
 }
