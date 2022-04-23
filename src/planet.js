@@ -14,7 +14,7 @@ export class Planet {
         const imageIdx = Math.floor(Math.random() * (12));
         
         this.image = new Image();
-        this.image.src = `./src/planets/planet_${imageIdx}.png`;
+        this.image.src = `./src/assets/planets/planet_${imageIdx}.png`;
         this.frameIdx = 0;
         
         this.handleEvent();
@@ -35,9 +35,9 @@ export class Planet {
         ctx.beginPath();
         ctx.arc(...arcPos,55,0,2*Math.PI);
         ctx.closePath();
-        ctx.fill();
+        // ctx.fill();
         
-        ctx.drawImage(this.image, this.frame(), 0, 300, 300, ...this.pos, 100, 100);
+        ctx.drawImage(this.image, this.frame(), 0, 300, 300, ...this.pos, 70, 70);
         //                             src_dim,    src_size,   ctx_pos,    ctx_dim
     }
 

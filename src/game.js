@@ -5,11 +5,11 @@ export class Game {
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
-        this.animate(ctx);
     }
     
     setUpPlanets(num) {
         let ready = false;
+        let count = 0;
         while(ready === false) {
             ready = true;
             this.planets = [
@@ -23,14 +23,19 @@ export class Game {
             if (!this.looksNice()) {
                 console.log("red light!");
                 ready = false;
+                if (count === 10) { num = 0}
+                count++;
             }
         }
+        this.animate(this.ctx);
         return this.planets;
     }
     
     looksNice() {
         let xTable = [];
         let yTable = [];
+        let ready = true;
+        
         this.planets.forEach(planet => {
             let planet_x = planet.pos[0];
             let planet_y = planet.pos[1];
@@ -51,9 +56,11 @@ export class Game {
                     greater = 200;
                     smaller = 0;
                 }
-                if (greater - smaller < 150) {
-                    console.log(greater, smaller);
-                    return false;
+
+                if (greater - smaller < 70) {
+                    console.log("x");
+                    console.log(greater - smaller);
+                    ready = false;
                 } 
             });
 
@@ -68,12 +75,14 @@ export class Game {
                     greater = 200;
                     smaller = 0;
                 }
-                if (greater - smaller < 150) {                   
-                    return false;
+                if (greater - smaller < 70) {
+                    console.log("y");                   
+                    console.log(greater-smaller);
+                    ready = false;
                 } 
             });
         });
-        return true;
+        return ready;
     }
     
     randomPos() {

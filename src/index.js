@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const ctx = canvas.getContext("2d");
   
   //creates game and gameView
+  background(canvas, ctx);
   console.log(ctx);
   const game = new Game(ctx, 3);
   new GameView(game, ctx).start();
-
   // runs render test
   // renderTest(ctx);
 
@@ -25,4 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
 function renderTest(ctx) {
   ctx.fillStyle = "blue";
   ctx.fillRect(100, 100, 100, 100);
+}
+
+function background(canvas, ctx) {
+  canvas.style.background = `url(./src/assets/SpaceBg/Backgrounds/Blue1.png)`;
+  let stars = new Image();
+  stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
+  // ctx.drawImage(stars, 0, 0,  0, 0, canvas.width, canvas.height);
 }
