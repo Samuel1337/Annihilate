@@ -30,6 +30,7 @@ export class Planet {
     }
     
     draw(ctx) {
+        
         let arcPos = [this.pos[0]+50, this.pos[1]+50];
         ctx.fillStyle = this.color;
         ctx.beginPath();
@@ -42,6 +43,7 @@ export class Planet {
     }
 
     animate(ctx) {
+        
         this.draw(ctx);
     }
 

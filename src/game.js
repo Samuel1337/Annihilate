@@ -23,7 +23,7 @@ export class Game {
             if (!this.looksNice()) {
                 console.log("red light!");
                 ready = false;
-                if (count === 10) { num = 0}
+                if (count === 1000) { num = 0}
                 count++;
             }
         }
@@ -57,7 +57,7 @@ export class Game {
                     smaller = 0;
                 }
 
-                if (greater - smaller < 70) {
+                if (greater - smaller < 30) {
                     console.log("x");
                     console.log(greater - smaller);
                     ready = false;
@@ -75,7 +75,7 @@ export class Game {
                     greater = 200;
                     smaller = 0;
                 }
-                if (greater - smaller < 70) {
+                if (greater - smaller < 50) {
                     console.log("y");                   
                     console.log(greater-smaller);
                     ready = false;

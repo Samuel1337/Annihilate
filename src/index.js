@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //creates game and gameView
   background(canvas, ctx);
   console.log(ctx);
-  const game = new Game(ctx, 3);
+  const game = new Game(ctx, 4);
   new GameView(game, ctx).start();
   // runs render test
   // renderTest(ctx);
@@ -31,5 +31,6 @@ function background(canvas, ctx) {
   canvas.style.background = `url(./src/assets/SpaceBg/Backgrounds/Blue1.png)`;
   let stars = new Image();
   stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
-  // ctx.drawImage(stars, 0, 0,  0, 0, canvas.width, canvas.height);
+  console.log(stars);
+  ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
 }
