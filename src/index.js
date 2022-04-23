@@ -2,6 +2,7 @@ const { Game } = require("./game");
 const { GameView } = require("./game_view");
 const { Planet } = require("./planet");
 const { Player } = require("./player");
+const { Pointer } = require("./pointer");
 
 document.addEventListener("DOMContentLoaded", function () {
   // sets up the canvas and ctx
@@ -14,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
   //creates game and gameView
   background(canvas, ctx);
   console.log(ctx);
-  const game = new Game(ctx, 4);
+  const game = new Game(ctx, 9);
   new GameView(game, ctx).start();
   // runs render test
   // renderTest(ctx);
-
+  pointer(canvas, document, ctx);
   // creates a planet
 });
 
@@ -33,4 +34,12 @@ function background(canvas, ctx) {
   stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
   console.log(stars);
   ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+}
+
+function pointer(canvas, evt, ctx) {
+  const pointer = new Pointer(canvas);
+  setInterval(()=>{
+    pointer.getMousePos(canvas,evt);
+    pointer.draw(ctx);
+  }, 20);
 }

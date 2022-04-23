@@ -5,6 +5,7 @@ export class Game {
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
+        this.animate(this.ctx);
     }
     
     setUpPlanets(num) {
@@ -13,24 +14,47 @@ export class Game {
         while(ready === false) {
             ready = true;
             this.planets = [
-                new Planet(this.randomPos(), "turquoise"),
-                new Planet(this.randomPos(), "red")
+                new Planet(Game.leftPos(), "turquoise", 0),
+                new Planet(Game.rightPos(), "red", 1)
             ];
+            let planetId = 2;
+            
             for (let i = 0; i < num; i++) {
-                this.planets.push(new Planet(this.randomPos(), "gray"));
+                this.planets.push(new Planet(Game.randomPos(), "gray", planetId));
+                planetId += 1;
             }
 
             if (!this.looksNice()) {
-                console.log("red light!");
                 ready = false;
-                if (count === 1000) { num = 0}
+                if (count === 1000) {
+                    console.log("red light!");
+                    count = 0;
+                    num--;
+                }
                 count++;
             }
         }
-        this.animate(this.ctx);
+        console.log("green light!");
         return this.planets;
     }
     
+    // looksNice() {
+    //     let ready = false;
+    //     for (let i = 0; i < this.planets.length-1; i++) {
+    //         const firstPlanet = this.planets[i];
+    //         ready = true;
+
+    //         for (let j = i+1; j < this.planets.length; j++) {
+    //             const secondPlanet = this.planets[j];
+                
+    //             if (firstPlanet.isCollidedWith(secondPlanet)) {
+    //                 ready = false;
+    //             }
+    //         }
+    //     }
+    //     return ready;
+    // }
+
     looksNice() {
         let xTable = [];
         let yTable = [];
@@ -57,7 +81,7 @@ export class Game {
                     smaller = 0;
                 }
 
-                if (greater - smaller < 30) {
+                if (greater - smaller < 20) {
                     console.log("x");
                     console.log(greater - smaller);
                     ready = false;
@@ -75,7 +99,7 @@ export class Game {
                     greater = 200;
                     smaller = 0;
                 }
-                if (greater - smaller < 50) {
+                if (greater - smaller < 20) {
                     console.log("y");                   
                     console.log(greater-smaller);
                     ready = false;
@@ -85,9 +109,25 @@ export class Game {
         return ready;
     }
     
-    randomPos() {
+    static randomPos() {
         let canvas = document.querySelector("canvas");
         let width = Math.random()*(canvas.width-250)+75;
+        let height = Math.random()*(canvas.height-250)+75;
+        let pos = [width, height];
+        return pos;
+    }
+
+    static leftPos() {
+        let canvas = document.querySelector("canvas");
+        let width = Math.random()*(canvas.width/4)+75;
+        let height = Math.random()*(canvas.height-250)+75;
+        let pos = [width, height];
+        return pos;
+    }
+
+    static rightPos() {
+        let canvas = document.querySelector("canvas");
+        let width = Math.random()*(canvas.width/4)+canvas.width*2/3-75;
         let height = Math.random()*(canvas.height-250)+75;
         let pos = [width, height];
         return pos;
