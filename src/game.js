@@ -1,5 +1,5 @@
 import { Planet } from "./planet";
-import { Pointer } from "./pointer";
+import { Selector } from "./selector";
 
 export class Game {
     constructor(canvas, ctx, num) {
@@ -7,17 +7,18 @@ export class Game {
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
+        
+        this.selector = new Selector(canvas);
+
         this.animate(ctx);
-        this.pointer = new Pointer(canvas);
     }
 
     animate(ctx) {
         setInterval(()=>{
             this.background(this.canvas, ctx);
-            // this.pointer.draw(ctx);
+            this.selector.draw(ctx);
             this.planets.forEach(planet => {
                 planet.draw(ctx);
-                // this.isMouseOn(planet);
             }); 
         }, 100);
     }
@@ -32,25 +33,22 @@ export class Game {
         ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
     }
     
-    isMouseOn(planet) {
-        if (planet.isCollidedWith(this.pointer)) {
-            planet.highlight(this.ctx);
-        }
-    }
-    
     setUpPlanets(num) {
+        let game = this;
         let ready = false;
         let count = 0;
+        
         while(ready === false) {
             ready = true;
             this.planets = [
-                new Planet(Game.leftPos(), "turquoise", 0),
-                new Planet(Game.rightPos(), "red", 1)
+                new Planet(Game.leftPos(), "turquoise", 0, game),
+                new Planet(Game.rightPos(), "red", 1, game)
             ];
             let planetId = 2;
             
             for (let i = 0; i < num; i++) {
-                this.planets.push(new Planet(Game.randomPos(), "gray", planetId));
+                this.planets.push(new Planet(Game.randomPos(), "gray", planetId, game));
+                console.log(game);
                 planetId += 1;
             }
 

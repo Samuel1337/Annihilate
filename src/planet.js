@@ -1,12 +1,15 @@
 import { Game } from "./game";
+import { Selector } from "./selector";
 
 export class Planet {
-    constructor(pos, color, id) {
+    constructor(pos, color, id, game) {
         
         this.pos = pos;
         this.defaultColor = color;
         this.color = color;
         this.id = id;
+        this.game = game;
+
         this.radius = 20;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         
@@ -20,6 +23,13 @@ export class Planet {
         this.frameIdx = 0;
         
         this.canvas = document.querySelector("canvas");
+        this.ctx = this.canvas.getContext("2d");
+        
+        this.mouseOn = false;
+        this.mousePos = [0,0];
+        this.dx = 0;
+        this.dy = 0;
+        this.distance = 1000;
     }
     
     frame() {
@@ -47,9 +57,7 @@ export class Planet {
         //                            src_dim,    src_size,   ctx_pos,    ctx_dim
     }
 
-    highlight(ctx) {
-        ctx.fillStyle = "yellow";
-    }
+    
 
     isCollidedWith(otherPlanet) {
         console.log("collision check");
@@ -66,38 +74,47 @@ export class Planet {
             return false;
         }
     }
-
+    
     isMouseOn() {
-        const mouseOn = false;
         const rect = this.canvas.getBoundingClientRect();
         window.addEventListener("pointermove",(evt) => {
-            const mousePos = [
+            this.mousePos = [
                 evt.clientX - rect.left,
                 evt.clientY - rect.top
             ];
-            const dx = (this.pos[0] + this.radius) - (mousePos[0]);
-            const dy = (this.pos[1] + this.radius) - (mousePos[1]);
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
+            this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
+            this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
         
-            if (distance < this.radius) {
+            if (this.distance < this.radius) {
                 // mouse on!
-                const mouseOn = true;
+                this.mouseOn = true;
                 this.color = "yellow";
                 console.log("Mouse On!");
-                // return true;
             } else {
                 // no mouse
-                const mouseOn = false;
+                this.mouseOn = false;
                 this.color = this.defaultColor;
-                // return false;
             }           
+            
         });
-
         window.addEventListener("pointerdown",(evt) => {
-            console.log("pointerdown");
-            if (mouseOn === true) {
+            console.log(this.mouseOn);
+            
+            this.mousePos = [
+                evt.clientX - rect.left,
+                evt.clientY - rect.top
+            ];
+            this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
+            this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
+            this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        
+            if (this.distance < this.radius) {
+                // mouse on!
                 console.log("Mouse Down!");
-                this.color = "white";
+                this.game.selector.setFirstTarget(this.pos);
+            } else {
+                this.game.selector.defaultTargets();
             }
         });
     }

@@ -2,7 +2,7 @@ const { Game } = require("./game");
 const { GameView } = require("./game_view");
 const { Planet } = require("./planet");
 const { Player } = require("./player");
-const { Pointer } = require("./pointer");
+const { Pointer } = require("./selector");
 
 document.addEventListener("DOMContentLoaded", function () {
   // sets up the canvas and ctx
