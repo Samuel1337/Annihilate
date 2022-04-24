@@ -10,7 +10,7 @@ export class Planet {
         this.id = id;
         this.game = game;
 
-        this.radius = 20;
+        this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         
         const frameIdx = Math.floor(Math.random() * (12));
@@ -58,7 +58,9 @@ export class Planet {
         ctx.beginPath();
         ctx.arc(...this.arcPos,this.radius+2,0,2*Math.PI);
         ctx.closePath();
-        ctx.fill();
+        if (this.color != "gray") {
+            ctx.fill();
+        }
         
         ctx.drawImage(this.image, this.frame(), 0, 300, 300, ...this.pos, this.radius*2, this.radius*2);
         //                            src_dim,    src_size,   ctx_pos,    ctx_dim
@@ -165,7 +167,7 @@ export class Planet {
     }
 
     highlight() {
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
         this.ctx.arc(...this.arcPos,this.radius+5,0,2*Math.PI);
         this.ctx.closePath();

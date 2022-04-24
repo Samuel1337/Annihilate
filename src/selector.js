@@ -1,7 +1,7 @@
 export class Selector {
   constructor(canvas) {
     this.canvas = canvas;
-    this.radius = 25;
+    this.radius = 30;
 
     this.defaultPos = [-100,-100];
     this.firstPos = this.defaultPos;
@@ -9,11 +9,11 @@ export class Selector {
   }
   
   setFirstTarget(pos) {
-    this.firstPos = [pos[0]+20, pos[1]+20];
+    this.firstPos = [pos[0]+this.radius, pos[1]+this.radius];
   }
   
   setSecondTarget(pos) {
-    this.secondPos = [pos[0]+20, pos[1]+20];
+    this.secondPos = [pos[0]+this.radius, pos[1]+this.radius];
   }
 
   defaultTargets() {

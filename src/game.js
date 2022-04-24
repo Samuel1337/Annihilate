@@ -7,7 +7,7 @@ export class Game {
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
-        
+
         this.selector = new Selector(canvas);
         this.selectedElements = 0;
         this.mouseOnElement = this.planets.map(planet => {return "_"} );
