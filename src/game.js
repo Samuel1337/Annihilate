@@ -1,11 +1,41 @@
 import { Planet } from "./planet";
+import { Pointer } from "./pointer";
 
 export class Game {
-    constructor(ctx, num) {
+    constructor(canvas, ctx, num) {
+        this.canvas = canvas;
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
-        this.animate(this.ctx);
+        this.animate(ctx);
+        this.pointer = new Pointer(canvas);
+    }
+
+    animate(ctx) {
+        setInterval(()=>{
+            this.background(this.canvas, ctx);
+            // this.pointer.draw(ctx);
+            this.planets.forEach(planet => {
+                planet.draw(ctx);
+                // this.isMouseOn(planet);
+            }); 
+        }, 100);
+    }
+
+    background(canvas, ctx) {
+        // canvas.style.background = `url(./src/assets/SpaceBg/Backgrounds/Blue1.png)`;
+        let background = new Image();
+        background.src = `./src/assets/SpaceBg/Backgrounds/Blue1.png`;
+        let stars = new Image();
+        stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+        ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+    }
+    
+    isMouseOn(planet) {
+        if (planet.isCollidedWith(this.pointer)) {
+            planet.highlight(this.ctx);
+        }
     }
     
     setUpPlanets(num) {
@@ -133,12 +163,5 @@ export class Game {
         return pos;
     }
     //Math.random() * (max - min) + min;
-
-    animate(ctx) {
-        setInterval(()=>{
-            this.planets.forEach(planet => {
-                planet.animate(ctx);
-            }); 
-        }, 100);
-    }
+    
 }
