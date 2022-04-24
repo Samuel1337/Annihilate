@@ -23,7 +23,7 @@ export class Selector {
 
   draw(ctx) {
     if (this.secondPos != this.defaultPos) {
-      ctx.strokeStyle = rgba(255,255,255,0.1);
+      ctx.strokeStyle = "white";
       ctx.beginPath();
       ctx.moveTo(...this.firstPos);
       ctx.lineTo(...this.secondPos);

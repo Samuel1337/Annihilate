@@ -165,7 +165,7 @@ export class Planet {
     }
 
     highlight() {
-        this.ctx.fillStyle = rgba(255,255,255,0.1);
+        this.ctx.fillStyle = "white";
         this.ctx.beginPath();
         this.ctx.arc(...this.arcPos,this.radius+5,0,2*Math.PI);
         this.ctx.closePath();
