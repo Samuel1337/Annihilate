@@ -9,6 +9,10 @@ export class Game {
         this.planets = this.setUpPlanets(num);
         
         this.selector = new Selector(canvas);
+        this.selectedElements = 0;
+        this.mouseOnElement = this.planets.map(planet => {return "_"} );
+        // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
+        // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
 
         this.animate(ctx);
     }
@@ -37,7 +41,7 @@ export class Game {
         let game = this;
         let ready = false;
         let count = 0;
-        
+
         while(ready === false) {
             ready = true;
             this.planets = [

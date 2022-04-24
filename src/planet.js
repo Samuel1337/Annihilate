@@ -21,15 +21,19 @@ export class Planet {
         this.image = new Image();
         this.image.src = `./src/assets/planets/planet_${frameIdx}.png`;
         this.frameIdx = 0;
-        
+        this.arcPos = [this.pos[0]+this.radius, this.pos[1]+this.radius];
+
         this.canvas = document.querySelector("canvas");
         this.ctx = this.canvas.getContext("2d");
         
         this.mouseOn = false;
+        this.clicked = false;
         this.mousePos = [0,0];
         this.dx = 0;
         this.dy = 0;
         this.distance = 1000;
+
+        this.selected = false;
     }
     
     frame() {
@@ -43,13 +47,16 @@ export class Planet {
     
     draw(ctx) {
         
-        let arcPos = [this.pos[0]+this.radius, this.pos[1]+this.radius];
-        
         this.isMouseOn();
+
+        if (this.selected) {
+            this.highlight();
+        }
+
         ctx.fillStyle = this.color;
         
         ctx.beginPath();
-        ctx.arc(...arcPos,this.radius+2,0,2*Math.PI);
+        ctx.arc(...this.arcPos,this.radius+2,0,2*Math.PI);
         ctx.closePath();
         ctx.fill();
         
@@ -82,40 +89,86 @@ export class Planet {
                 evt.clientX - rect.left,
                 evt.clientY - rect.top
             ];
+            // gets mouse's relative position to the canvas
+            
             this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
             this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
             this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-        
-            if (this.distance < this.radius) {
-                // mouse on!
-                this.mouseOn = true;
-                this.color = "yellow";
-                console.log("Mouse On!");
-            } else {
-                // no mouse
+            // calculates radial distance between planet and mouse
+
+            if (this.distance > this.radius) {
+                // no mouse uses default color around planet
                 this.mouseOn = false;
                 this.color = this.defaultColor;
+                this.game.mouseOnElement[this.id] = "_";
+            } else {
+                // mouse over! highlights planet in yellow
+                this.mouseOn = true;
+                this.color = "yellow";
+                this.game.mouseOnElement[this.id] = this.id;
             }           
             
         });
-        window.addEventListener("pointerdown",(evt) => {
-            console.log(this.mouseOn);
+        window.addEventListener("mousedown",(evt) => {
             
-            this.mousePos = [
-                evt.clientX - rect.left,
-                evt.clientY - rect.top
-            ];
-            this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
-            this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
-            this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-        
-            if (this.distance < this.radius) {
-                // mouse on!
-                console.log("Mouse Down!");
-                this.game.selector.setFirstTarget(this.pos);
-            } else {
-                this.game.selector.defaultTargets();
+            if (this.clicked === false) {
+                // prevents capturing more than 1 click
+
+                if (this.game.mouseOnElement.every(el => { return el === "_" })) {
+                    // when clicking on empty space
+                    this.resetSelection();
+                }
+                if (this.game.mouseOnElement.includes(this.id)) {
+                    // when clicking on unselected planet  
+                    
+                    if (this.game.selectedElements === 0) {
+                        // when this is the first planet to be selected
+                        this.addSelection("first");
+                    } else {
+                        // when this is the second planet to be selected
+                        this.addSelection("second");
+                        setTimeout(()=>{
+                            this.resetSelection();
+                        },1000);
+                    }
+                } else {
+                    // when clicking on another planet while this one is selected  
+                    if (this.selected) {
+                        setTimeout(()=>{
+                            this.resetSelection();
+                        },1000);
+                    }
+                }
+                this.clicked = true; // prevents capturing more than 1 click
             }
         });
+        window.addEventListener("mouseup",(evt) => {
+            this.clicked = false; // allows planet to be clicked on again
+        });
+    }
+    
+    addSelection(target) {
+        if (target === "first") {
+            this.game.selector.setFirstTarget(this.pos);
+        } else {
+            this.game.selector.setSecondTarget(this.pos);
+        }
+        this.game.selectedElements += 1;
+        this.selected = true;
+    }
+
+    resetSelection() {
+        this.game.selector.defaultTargets();
+        this.game.selectedElements = 0;
+        this.selected = false;
+        this.clicked = false;
+    }
+
+    highlight() {
+        this.ctx.fillStyle = rgba(255,255,255,0.1);
+        this.ctx.beginPath();
+        this.ctx.arc(...this.arcPos,this.radius+5,0,2*Math.PI);
+        this.ctx.closePath();
+        this.ctx.fill();
     }
 }

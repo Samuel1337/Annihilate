@@ -10,7 +10,6 @@ export class Selector {
   
   setFirstTarget(pos) {
     this.firstPos = [pos[0]+20, pos[1]+20];
-    console.log(this.firstPos);
   }
   
   setSecondTarget(pos) {
@@ -23,16 +22,14 @@ export class Selector {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.arc(...this.firstPos,this.radius,0,2*Math.PI);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle = "orange";
-    ctx.beginPath();
-    ctx.arc(...this.secondPos,this.radius,0,2*Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    if (this.secondPos != this.defaultPos) {
+      ctx.strokeStyle = rgba(255,255,255,0.1);
+      ctx.beginPath();
+      ctx.moveTo(...this.firstPos);
+      ctx.lineTo(...this.secondPos);
+      ctx.lineWidth = 15;
+      ctx.closePath();
+      ctx.stroke();
+    }
   }
 }
