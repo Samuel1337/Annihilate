@@ -35,7 +35,7 @@ export class Selector {
       ctx.beginPath();
       ctx.moveTo(...this.firstPos);
       ctx.lineTo(...this.secondPos);
-      ctx.lineWidth = 15;
+      // ctx.lineWidth = 15;
       ctx.closePath();
       ctx.stroke();
     }

@@ -9,14 +9,19 @@ export class Game {
         // basic settings
         this.canvas = canvas;
         this.ctx = ctx;
-        this.planets = [];
-        this.planets = this.setUpPlanets(num);
-
+        
         // sets up players
         this.space = new Space();
         this.player = new Player();
         this.ai = new Ai();
+        console.log(this.space)
+        console.log(this.player)
+        console.log(this.ai)
 
+        // sets up planets
+        this.planets = [];
+        this.planets = this.setUpPlanets(num);
+        
         // sets up selector
         this.selector = new Selector(canvas);
         this.selectedElements = 0;
@@ -33,7 +38,7 @@ export class Game {
             this.background(this.canvas, ctx);
             this.selector.draw(ctx);
             this.planets.forEach(planet => {
-                planet.draw(ctx);
+                planet.step(ctx);
             }); 
         }, 100);
     }
@@ -64,14 +69,14 @@ export class Game {
             // sets up player and AI
             ready = true;
             this.planets = [
-                new Planet(Game.leftPos(), "turquoise", 0, game),
-                new Planet(Game.rightPos(), "red", 1, game)
+                new Planet(Game.leftPos(), this.player, 0, game),
+                new Planet(Game.rightPos(), this.ai, 1, game)
             ];
             let planetId = 2;
             
             for (let i = 0; i < num; i++) {
                 // sets up free planets
-                this.planets.push(new Planet(Game.randomPos(), "orange", planetId, game));
+                this.planets.push(new Planet(Game.randomPos(), this.space, planetId, game));
                 console.log(game);
                 planetId += 1;
             }

@@ -1,15 +1,21 @@
 export class Planet {
-    constructor(pos, color, id, game) {
+    constructor(pos, owner, id, game) {
         // basic planet settings
         this.pos = pos;
-        this.defaultColor = color;
-        this.color = color;
+        this.owner = owner;
         this.id = id;
         this.game = game;
+        this.defaultColor = owner.color;
+        this.color = owner.color;
         
         // arbitrary planet settings
         this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
+
+        // core gameplay settings
+        this.population = 80;
+        this.cap = owner.cap;
+        this.rate = owner.rate;
 
         // random choice of planet sprite from ./assets/planets
         const imgIdx = Math.floor(Math.random() * (12));
@@ -18,7 +24,6 @@ export class Planet {
         this.image = new Image();
         this.image.src = `./src/assets/planets/planet_${imgIdx}.png`;
         this.frameIdx = 0;
-        this.arcPos = [this.pos[0]+this.radius, this.pos[1]+this.radius];
 
         // selects canvas and context
         this.canvas = document.querySelector("canvas");
@@ -35,18 +40,12 @@ export class Planet {
         this.selected = false;
     }
     
-    frame() {
-        // crops the sprite image into frames and iterates through them
-        let frame = 300*this.frameIdx;
-        this.frameIdx++;
-        if (this.frameIdx === 50) {
-            this.frameIdx = 0;
-        }
-        return frame;
+    step(ctx) {
+        this.draw(ctx);
+        this.growPopulation();
     }
     
     draw(ctx) {
-        
         // adds event listener that highlights the planet (hover, click)
         this.isMouseOn();
         if (this.selected) {
@@ -58,21 +57,26 @@ export class Planet {
         this.drawImage(ctx);
         
         // draws the number of fighters on the planet
-        this.drawPopulation(ctx);
-        
+        this.drawPopulation(ctx);   
+    }
+    
+    frame() {
+        // crops the sprite image into frames and iterates through them
+        let frame = 300*this.frameIdx;
+        this.frameIdx++;
+        if (this.frameIdx === 50) {
+            this.frameIdx = 0;
+        }
+        return frame;
     }
     
     drawOutline(ctx) {
         // sets up colored outline
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(...this.arcPos,this.radius+2,0,2*Math.PI);
+        ctx.arc(...this.center,this.radius+2,0,2*Math.PI);
         ctx.closePath();
-
-        // draws the colored outline
-        if (this.color != "orange") {
-            ctx.fill();
-        }
+        ctx.fill();    
     }
     
     drawImage(ctx) {
@@ -82,7 +86,30 @@ export class Planet {
     }
 
     drawPopulation(ctx) {
+        // draws white backdrop
+        ctx.strokeStyle = "white";
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = "center";
+        // ctx.textBaseline = "hanging";
+        ctx.lineWidth = 3;
+        ctx.strokeText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
         
+        // draws black text
+        ctx.fillStyle = "black";
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = "center";
+        // ctx.textBaseline = "hanging";
+        ctx.fillText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
+        
+    }
+
+    growPopulation() {
+        // increments planet population to its peak
+        if (this.population >= this.cap) {
+            this.population = this.cap;
+        } else {
+            this.population += this.rate;
+        }
     }
 
     isCollidedWith(otherPlanet) {
@@ -203,7 +230,7 @@ export class Planet {
     highlight() {
         this.ctx.fillStyle = this.defaultColor;
         this.ctx.beginPath();
-        this.ctx.arc(...this.arcPos,this.radius+5,0,2*Math.PI);
+        this.ctx.arc(...this.center,this.radius+5,0,2*Math.PI);
         this.ctx.closePath();
         this.ctx.fill();
     }
