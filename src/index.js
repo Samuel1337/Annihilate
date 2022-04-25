@@ -1,8 +1,5 @@
 const { Game } = require("./game");
 const { GameView } = require("./game_view");
-const { Planet } = require("./planet");
-const { Player } = require("./player");
-const { Pointer } = require("./selector");
 
 document.addEventListener("DOMContentLoaded", function () {
   // sets up the canvas and ctx
@@ -14,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
   //creates game and gameView
   console.log(ctx);
-  const game = new Game(canvas, ctx, 5);
+  const game = new Game(canvas, ctx, 7);
   new GameView(game, ctx).start();
 });
 

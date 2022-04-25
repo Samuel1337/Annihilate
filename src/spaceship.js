@@ -1,6 +1,6 @@
-export class MovingObject {
-    constructor(options) {
-        this.pos = options.pos;
+export class Spaceship {
+    constructor(startPlanet, endPlanet) {
+        this.pos = startPlanet.pos;
         this.vel = options.vel;
         this.dir = options.dir;
         this.radius = options.radius;

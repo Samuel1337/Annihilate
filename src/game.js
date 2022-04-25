@@ -1,19 +1,30 @@
-import { Planet } from "./planet";
 import { Selector } from "./selector";
+import { Planet } from "./planet";
+import { Player } from "./player";
+import { Space } from "./space";
+import { Ai } from "./ai";
 
 export class Game {
     constructor(canvas, ctx, num) {
+        // basic settings
         this.canvas = canvas;
         this.ctx = ctx;
         this.planets = [];
         this.planets = this.setUpPlanets(num);
 
+        // sets up players
+        this.space = new Space();
+        this.player = new Player();
+        this.ai = new Ai();
+
+        // sets up selector
         this.selector = new Selector(canvas);
         this.selectedElements = 0;
         this.mouseOnElement = this.planets.map(planet => {return "_"} );
         // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
         // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
 
+        // plays the game
         this.animate(ctx);
     }
 
@@ -28,13 +39,20 @@ export class Game {
     }
 
     background(canvas, ctx) {
-        // canvas.style.background = `url(./src/assets/SpaceBg/Backgrounds/Blue1.png)`;
+        // creates background image
         let background = new Image();
         background.src = `./src/assets/SpaceBg/Backgrounds/Blue1.png`;
+        
+        // creates stars image
         let stars = new Image();
         stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
+        
+        // draws background image
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+        
+        // draws stars image
         ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+        
     }
     
     setUpPlanets(num) {
@@ -43,6 +61,7 @@ export class Game {
         let count = 0;
 
         while(ready === false) {
+            // sets up player and AI
             ready = true;
             this.planets = [
                 new Planet(Game.leftPos(), "turquoise", 0, game),
@@ -51,14 +70,17 @@ export class Game {
             let planetId = 2;
             
             for (let i = 0; i < num; i++) {
-                this.planets.push(new Planet(Game.randomPos(), "gray", planetId, game));
+                // sets up free planets
+                this.planets.push(new Planet(Game.randomPos(), "orange", planetId, game));
                 console.log(game);
                 planetId += 1;
             }
-
+            
             if (!this.looksNice()) {
+                // checks to see if no planets are overlapping
                 ready = false;
                 if (count === 1000) {
+                    // tries 1000 times before readjusting the number of planets
                     console.log("red light!");
                     count = 0;
                     num--;
@@ -70,74 +92,20 @@ export class Game {
         return this.planets;
     }
     
-    // looksNice() {
-    //     let ready = false;
-    //     for (let i = 0; i < this.planets.length-1; i++) {
-    //         const firstPlanet = this.planets[i];
-    //         ready = true;
-
-    //         for (let j = i+1; j < this.planets.length; j++) {
-    //             const secondPlanet = this.planets[j];
-                
-    //             if (firstPlanet.isCollidedWith(secondPlanet)) {
-    //                 ready = false;
-    //             }
-    //         }
-    //     }
-    //     return ready;
-    // }
-
     looksNice() {
-        let xTable = [];
-        let yTable = [];
+        // checks if each planet is too close to every other planet 
         let ready = true;
-        
-        this.planets.forEach(planet => {
-            let planet_x = planet.pos[0];
-            let planet_y = planet.pos[1];
-            xTable.push(planet_x);
-            yTable.push(planet_y);
-            
-            let greater;
-            let smaller;
+        for (let i = 0; i < this.planets.length-1; i++) {
+            const firstPlanet = this.planets[i];
 
-            xTable.forEach(el => {
-                if (el > planet_x){
-                    greater = el;
-                    smaller = planet_x;
-                } else if (el < planet_x) {
-                    greater = planet_x;
-                    smaller = el;
-                } else {
-                    greater = 200;
-                    smaller = 0;
-                }
-
-                if (greater - smaller < 20) {
-                    console.log("x");
-                    console.log(greater - smaller);
+            for (let j = i+1; j < this.planets.length; j++) {
+                const secondPlanet = this.planets[j];
+                
+                if (firstPlanet.isTooCloseTo(secondPlanet)) {
                     ready = false;
-                } 
-            });
-
-            yTable.forEach(el => {
-                if (el > planet_y){
-                    greater = el;
-                    smaller = planet_y;
-                } else if (el < planet_y) {
-                    greater = planet_y;
-                    smaller = el;
-                } else {
-                    greater = 200;
-                    smaller = 0;
                 }
-                if (greater - smaller < 20) {
-                    console.log("y");                   
-                    console.log(greater-smaller);
-                    ready = false;
-                } 
-            });
-        });
+            }
+        }
         return ready;
     }
     

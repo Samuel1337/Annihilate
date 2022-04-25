@@ -1,7 +1,7 @@
-class Space {
+export class Space {
     constructor() {
-        this.color = "gray";
+        this.color = "orange";
         this.cap = 80;
         this.rate = 1;
-    }
+      }
 }

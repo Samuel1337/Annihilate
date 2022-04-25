@@ -1,19 +1,27 @@
 export class Selector {
   constructor(canvas) {
+    // basic selector 
     this.canvas = canvas;
     this.radius = 30;
+    
+    // planets
+    this.firstPlanet = undefined;
+    this.secondPlanet = undefined;
 
+    // planets pos
     this.defaultPos = [-100,-100];
     this.firstPos = this.defaultPos;
     this.secondPos = this.defaultPos;
   }
   
-  setFirstTarget(pos) {
-    this.firstPos = [pos[0]+this.radius, pos[1]+this.radius];
+  setFirstTarget(planet) {
+    this.firstPos = [planet.pos[0]+this.radius, planet.pos[1]+this.radius];
+    this.firstPlanet = planet;
   }
   
-  setSecondTarget(pos) {
-    this.secondPos = [pos[0]+this.radius, pos[1]+this.radius];
+  setSecondTarget(planet) {
+    this.secondPos = [planet.pos[0]+this.radius, planet.pos[1]+this.radius];
+    this.secondPlanet = planet;
   }
 
   defaultTargets() {
@@ -23,7 +31,7 @@ export class Selector {
 
   draw(ctx) {
     if (this.secondPos != this.defaultPos) {
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = this.firstPlanet.color;
       ctx.beginPath();
       ctx.moveTo(...this.firstPos);
       ctx.lineTo(...this.secondPos);

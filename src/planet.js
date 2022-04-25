@@ -1,31 +1,30 @@
-import { Game } from "./game";
-import { Selector } from "./selector";
-
 export class Planet {
     constructor(pos, color, id, game) {
-        
+        // basic planet settings
         this.pos = pos;
         this.defaultColor = color;
         this.color = color;
         this.id = id;
         this.game = game;
-
+        
+        // arbitrary planet settings
         this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
-        
-        const frameIdx = Math.floor(Math.random() * (12));
-        
-        this.picture = document.createElement("img");
-        this.picture.src = `./src/assets/planets/planet_${frameIdx}.png`;
 
+        // random choice of planet sprite from ./assets/planets
+        const imgIdx = Math.floor(Math.random() * (12));
+        
+        // creates planet image instance
         this.image = new Image();
-        this.image.src = `./src/assets/planets/planet_${frameIdx}.png`;
+        this.image.src = `./src/assets/planets/planet_${imgIdx}.png`;
         this.frameIdx = 0;
         this.arcPos = [this.pos[0]+this.radius, this.pos[1]+this.radius];
 
+        // selects canvas and context
         this.canvas = document.querySelector("canvas");
         this.ctx = this.canvas.getContext("2d");
         
+        // pointer variables
         this.mouseOn = false;
         this.clicked = false;
         this.mousePos = [0,0];
@@ -37,6 +36,7 @@ export class Planet {
     }
     
     frame() {
+        // crops the sprite image into frames and iterates through them
         let frame = 300*this.frameIdx;
         this.frameIdx++;
         if (this.frameIdx === 50) {
@@ -47,28 +47,46 @@ export class Planet {
     
     draw(ctx) {
         
+        // adds event listener that highlights the planet (hover, click)
         this.isMouseOn();
-
         if (this.selected) {
             this.highlight();
         }
 
-        ctx.fillStyle = this.color;
+        // draws planet
+        this.drawOutline(ctx);
+        this.drawImage(ctx);
         
+        // draws the number of fighters on the planet
+        this.drawPopulation(ctx);
+        
+    }
+    
+    drawOutline(ctx) {
+        // sets up colored outline
+        ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(...this.arcPos,this.radius+2,0,2*Math.PI);
         ctx.closePath();
-        if (this.color != "gray") {
+
+        // draws the colored outline
+        if (this.color != "orange") {
             ctx.fill();
         }
-        
+    }
+    
+    drawImage(ctx) {
+        // draws one specific frame of the sprite 
         ctx.drawImage(this.image, this.frame(), 0, 300, 300, ...this.pos, this.radius*2, this.radius*2);
-        //                            src_dim,    src_size,   ctx_pos,    ctx_dim
+        //           |  src_img  |    src_dim    | src_size |  ctx_pos   |           ctx_dim          |
     }
 
-    
+    drawPopulation(ctx) {
+        
+    }
 
     isCollidedWith(otherPlanet) {
+        // checks for collision
         console.log("collision check");
         const dx = (this.pos[0] + this.radius) - (otherPlanet.pos[0] + otherPlanet.radius);
         const dy = (this.pos[1] + this.radius) - (otherPlanet.pos[1] + otherPlanet.radius);
@@ -80,6 +98,22 @@ export class Planet {
             return true;
         } else {
             // no collision
+            return false;
+        }
+    }
+
+    isTooCloseTo(otherPlanet) {
+        // checks for proximity
+        const dx = (this.pos[0] + this.radius) - (otherPlanet.pos[0] + otherPlanet.radius);
+        const dy = (this.pos[1] + this.radius) - (otherPlanet.pos[1] + otherPlanet.radius);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+    
+        if (distance < this.radius + otherPlanet.radius + 50) {
+            // too close!
+            console.log("Too close!");
+            return true;
+        } else {
+            // far enough
             return false;
         }
     }
@@ -151,9 +185,9 @@ export class Planet {
     
     addSelection(target) {
         if (target === "first") {
-            this.game.selector.setFirstTarget(this.pos);
+            this.game.selector.setFirstTarget(this);
         } else {
-            this.game.selector.setSecondTarget(this.pos);
+            this.game.selector.setSecondTarget(this);
         }
         this.game.selectedElements += 1;
         this.selected = true;
@@ -167,7 +201,7 @@ export class Planet {
     }
 
     highlight() {
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.defaultColor;
         this.ctx.beginPath();
         this.ctx.arc(...this.arcPos,this.radius+5,0,2*Math.PI);
         this.ctx.closePath();
