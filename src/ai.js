@@ -1,8 +1,8 @@
 export class Ai {
-    constructor(level=1, game) {
+    constructor(game, level=1) {
         this.color = "red"
-        this.cap = 50;
-        this.rate = 3;
+        this.cap = 30*level;
+        this.rate = 1;
         this.game = game;
     }
 }

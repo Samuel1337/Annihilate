@@ -16,12 +16,14 @@ export class Attack {
         this.launch = setInterval(() => {
             if (attacking) {
                 this.startPlanet.underAttack = true;
-                this.startPlanet.population -= this.startPlanet.rate+1;
+                this.endPlanet.underAttack = true;
+                this.startPlanet.population -= 1;
                 
                 new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, this.velocity);
                 
                 if (this.startPlanet.population <= this.startPlanet.rate) {
                     this.startPlanet.underAttack = false;
+                    this.endPlanet.underAttack = false;
                     attacking = false;
                     clearInterval(this.launch);
                 }

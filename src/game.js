@@ -12,29 +12,30 @@ export class Game {
         
         // sets up players
         this.space = new Space(this);
-        this.player = new Player("turquoise", 50, 3, this);
-        this.ai = new Ai(1, this);
-
+        this.player = new Player(this);
+        this.ai = new Ai(this);
+        
         // sets up planets
         this.planets = [];
         this.planets = this.setUpPlanets(num);
         
         // sets up spaceships
         this.spaceships = [];
-
+        
         // sets up selector
         this.selector = new Selector(canvas);
         this.currentPlanet = this.planets[0];
         this.selectedElements = 0;
         this.mouseOnElement = this.planets.map(planet => {return "_"} );
+        this.clicked = false;
         // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
         // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
-
+        
         // plays the game
         this.handleClick();
         window.requestAnimationFrame(this.animate.bind(this));
     }
-
+    
     animate() {
         this.background(this.canvas, this.ctx);
         this.selector.draw(this.ctx);
@@ -45,16 +46,6 @@ export class Game {
             spaceship.step(this.ctx);
         });
         window.requestAnimationFrame(this.animate.bind(this));
-        // setInterval(()=>{
-        //     this.background(this.canvas, ctx);
-        //     this.selector.draw(ctx);
-        //     this.planets.forEach(planet => {
-        //         planet.step(ctx);
-        //     });
-        //     this.spaceships.forEach(spaceship => {
-        //         spaceship.step(ctx);
-        //     });
-        // }, 20);
     }
 
     background(canvas, ctx) {
@@ -129,7 +120,7 @@ export class Game {
 
     handleClick() {
         window.addEventListener("mousedown",(evt) => {
-                console.log(this.mouseOnElement);
+            console.log(this.clicked);
             if (this.clicked === false) {
                 // this.clicked = true;
                 console.log("click");
@@ -156,16 +147,16 @@ export class Game {
                         this.currentPlanet.addSelection("second");
                         setTimeout(()=>{
                             this.currentPlanet.resetSelection();
-                        },1000);
+                        },500);
                     }
                 }
-                if (this.currentPlanet.selected) {
+                if (this.currentPlanet.selected && this.selectedElements > 1) {
                     console.log("clicked on another planet")
                     // when clicking on another planet while this one is selected  
                     setTimeout(()=>{
                         this.planets.forEach(planet => { planet.resetSelection() })
                         this.currentPlanet.resetSelection();
-                    },1000);
+                    },500);
                 }
                 this.clicked = true; // prevents capturing more than 1 click
             }

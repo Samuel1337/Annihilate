@@ -17,7 +17,8 @@ export class Planet {
         this.population = 30;
         this.cap = owner.cap;
         this.rate = owner.rate;
-        
+        this.slowdownRate = 0;
+
         // random choice of planet sprite from ./assets/planets
         const imgIdx = Math.floor(Math.random() * (12));
         
@@ -25,7 +26,7 @@ export class Planet {
         this.image = new Image();
         this.image.src = `./src/assets/planets/planet_${imgIdx}.png`;
         this.frameIdx = 0;
-        this.slowdown = 0;
+        this.slowdownFrame = 0;
 
         // selects canvas and context
         this.canvas = document.querySelector("canvas");
@@ -69,9 +70,9 @@ export class Planet {
     frame() {
         // crops the sprite image into frames and iterates through them
         let frame = 300*this.frameIdx;
-        this.slowdown++;
-        if (this.slowdown === 5) {
-            this.slowdown = 0;
+        this.slowdownFrame++;
+        if (this.slowdownFrame === 5) {
+            this.slowdownFrame = 0;
             this.frameIdx++;
         }
         if (this.frameIdx === 50) {
@@ -114,11 +115,15 @@ export class Planet {
     }
 
     growPopulation() {
+        this.slowdownRate += 1;
         // increments planet population to its peak
         if (this.population >= this.cap) {
             this.population = this.cap;
         } else {
-            this.population += this.rate;
+            if (this.slowdownRate >= 3) {
+                this.population += this.rate;
+                this.slowdownRate = 0;
+            }
         }
     }
 
