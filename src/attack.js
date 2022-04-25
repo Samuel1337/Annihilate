@@ -21,7 +21,7 @@ export class Attack {
                 
                 new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, this.velocity);
                 
-                if (this.startPlanet.population <= this.startPlanet.rate) {
+                if (this.startPlanet.population <= 0) {
                     this.startPlanet.underAttack = false;
                     this.endPlanet.underAttack = false;
                     attacking = false;

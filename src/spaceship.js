@@ -15,12 +15,12 @@ export class Spaceship {
         this.alive = true;
 
         // sets spaceship center
-        const x = this.pos[0] + this.radius;
-        const y = this.pos[1] + this.radius;
+        const x = this.pos[0] + this.radius/2;
+        const y = this.pos[1] + this.radius/2;
         this.pos = [x, y];
 
-        const endX = this.endPos[0] + this.radius;
-        const endY = this.endPos[1] + this.radius;
+        const endX = this.endPos[0] + this.radius/2;
+        const endY = this.endPos[1] + this.radius/2;
         this.endPos = [endX, endY];
 
 
@@ -90,5 +90,22 @@ export class Spaceship {
         this.endPlanet.color = this.startPlanet.owner.color;
         this.endPlanet.cap = this.startPlanet.owner.cap;
         this.endPlanet.rate = this.startPlanet.owner.rate;
+    }
+
+    isCollidedWith(otherSpaceship) {
+        // checks for collision
+        console.log("collision check");
+        const dx = (this.pos[0] + this.radius) - (otherSpaceship.pos[0] + otherSpaceship.radius);
+        const dy = (this.pos[1] + this.radius) - (otherSpaceship.pos[1] + otherSpaceship.radius);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+    
+        if (distance < this.radius + otherSpaceship.radius) {
+            // collision detected!
+            console.log("Collision!");
+            return true;
+        } else {
+            // no collision
+            return false;
+        }
     }
 }
