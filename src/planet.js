@@ -11,9 +11,10 @@ export class Planet {
         // arbitrary planet settings
         this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
+        this.underAttack = false;
 
         // core gameplay settings
-        this.population = 80;
+        this.population = 30;
         this.cap = owner.cap;
         this.rate = owner.rate;
 
@@ -42,7 +43,9 @@ export class Planet {
     
     step(ctx) {
         this.draw(ctx);
-        this.growPopulation();
+        if (!this.underAttack) {
+            this.growPopulation();
+        }
     }
     
     draw(ctx) {
@@ -91,7 +94,7 @@ export class Planet {
         ctx.font = 'bold 16px sans-serif';
         ctx.textAlign = "center";
         // ctx.textBaseline = "hanging";
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2;
         ctx.strokeText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
         
         // draws black text

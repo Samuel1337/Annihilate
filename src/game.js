@@ -14,9 +14,6 @@ export class Game {
         this.space = new Space();
         this.player = new Player();
         this.ai = new Ai();
-        console.log(this.space)
-        console.log(this.player)
-        console.log(this.ai)
 
         // sets up planets
         this.planets = [];
@@ -77,15 +74,14 @@ export class Game {
             for (let i = 0; i < num; i++) {
                 // sets up free planets
                 this.planets.push(new Planet(Game.randomPos(), this.space, planetId, game));
-                console.log(game);
                 planetId += 1;
             }
             
             if (!this.looksNice()) {
                 // checks to see if no planets are overlapping
                 ready = false;
-                if (count === 1000) {
-                    // tries 1000 times before readjusting the number of planets
+                if (count === 100) {
+                    // tries 100 times before readjusting the number of planets
                     console.log("red light!");
                     count = 0;
                     num--;
