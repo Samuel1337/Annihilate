@@ -36,7 +36,7 @@ export class Selector {
   }
 
   draw(ctx) {
-    if (this.secondPos != this.defaultPos && this.secondPos != this.firstPos) {
+    if (this.secondPos != this.defaultPos && this.secondPlanet != this.firstPlanet) {
       ctx.strokeStyle = this.firstPlanet.color;
       ctx.beginPath();
       ctx.moveTo(...this.firstPos);

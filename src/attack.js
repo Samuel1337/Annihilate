@@ -19,14 +19,14 @@ export class Attack {
                 this.startPlanet.population -= this.startPlanet.rate+1;
                 
                 new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, this.velocity);
-
+                
                 if (this.startPlanet.population <= this.startPlanet.rate) {
                     this.startPlanet.underAttack = false;
                     attacking = false;
                     clearInterval(this.launch);
                 }
             }
-        }, 500);
+        }, 500); // spacing between spaceships
         
     }
     velocity() {

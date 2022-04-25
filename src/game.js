@@ -11,33 +11,50 @@ export class Game {
         this.ctx = ctx;
         
         // sets up players
-        this.space = new Space();
-        this.player = new Player();
-        this.ai = new Ai();
+        this.space = new Space(this);
+        this.player = new Player("turquoise", 50, 3, this);
+        this.ai = new Ai(1, this);
 
         // sets up planets
         this.planets = [];
         this.planets = this.setUpPlanets(num);
         
+        // sets up spaceships
+        this.spaceships = [];
+
         // sets up selector
         this.selector = new Selector(canvas);
+        this.currentPlanet = this.planets[0];
         this.selectedElements = 0;
         this.mouseOnElement = this.planets.map(planet => {return "_"} );
         // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
         // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
 
         // plays the game
-        this.animate(ctx);
+        this.handleClick();
+        window.requestAnimationFrame(this.animate.bind(this));
     }
 
-    animate(ctx) {
-        setInterval(()=>{
-            this.background(this.canvas, ctx);
-            this.selector.draw(ctx);
-            this.planets.forEach(planet => {
-                planet.step(ctx);
-            }); 
-        }, 100);
+    animate() {
+        this.background(this.canvas, this.ctx);
+        this.selector.draw(this.ctx);
+        this.planets.forEach(planet => {
+            planet.step(this.ctx);
+        });
+        this.spaceships.forEach(spaceship => {
+            spaceship.step(this.ctx);
+        });
+        window.requestAnimationFrame(this.animate.bind(this));
+        // setInterval(()=>{
+        //     this.background(this.canvas, ctx);
+        //     this.selector.draw(ctx);
+        //     this.planets.forEach(planet => {
+        //         planet.step(ctx);
+        //     });
+        //     this.spaceships.forEach(spaceship => {
+        //         spaceship.step(ctx);
+        //     });
+        // }, 20);
     }
 
     background(canvas, ctx) {
@@ -50,10 +67,10 @@ export class Game {
         stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
         
         // draws background image
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width*2, canvas.height*2);
         
         // draws stars image
-        ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width+200, canvas.height+200);
+        ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width*1.5, canvas.height*1.5);
         
     }
     
@@ -108,6 +125,70 @@ export class Game {
             }
         }
         return ready;
+    }
+
+    handleClick() {
+        window.addEventListener("mousedown",(evt) => {
+                console.log(this.mouseOnElement);
+            if (this.clicked === false) {
+                // this.clicked = true;
+                console.log("click");
+                // prevents capturing more than 1 click
+                
+                if (this.mouseOnElement.every(el => { return el === "_" })) {
+                    console.log("empty space");
+                    // when clicking on empty space
+                    this.planets.forEach(planet => { planet.resetSelection() })
+                } else {
+                    console.log("clicked unselected planet");
+                    console.log(this.currentPlanet.selected);
+                    // when clicking on unselected planet  
+
+                    if (this.selectedElements === 0) {
+                        console.log("first planet selected");
+                        // when this is the first planet to be selected
+
+                        this.currentPlanet.addSelection("first");
+                    } else {
+                        console.log("second planet selected");
+                        // when this is the second planet to be selected
+
+                        this.currentPlanet.addSelection("second");
+                        setTimeout(()=>{
+                            this.currentPlanet.resetSelection();
+                        },1000);
+                    }
+                }
+                if (this.currentPlanet.selected) {
+                    console.log("clicked on another planet")
+                    // when clicking on another planet while this one is selected  
+                    setTimeout(()=>{
+                        this.planets.forEach(planet => { planet.resetSelection() })
+                        this.currentPlanet.resetSelection();
+                    },1000);
+                }
+                this.clicked = true; // prevents capturing more than 1 click
+            }
+        });
+        window.addEventListener("mouseup",(evt) => {
+            this.clicked = false; // allows planet to be clicked on again
+        });
+    }
+
+    getPlanet() {
+        const planetId = -1;
+        this.mouseOnElement.forEach(planetId => {
+            if (planetId != "_") {
+                planetId = planetId;
+            }
+        }); 
+        if (planetId != -1) {
+            this.planets.forEach(planet => {
+                if (planet.id === planetId) {
+                    return planet;
+                }
+            });
+        }
     }
     
     static randomPos() {

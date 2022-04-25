@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // loadFonts();
 
   //creates game and gameView
-  const game = new Game(canvas, ctx, 7);
+  const game = new Game(canvas, ctx, 9);
   new GameView(game, ctx).start();
 });
 

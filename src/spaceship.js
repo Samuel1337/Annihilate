@@ -6,9 +6,11 @@ export class Spaceship {
         this.endPos = endPlanet.pos;
         this.owner = owner;
         this.velocity = velocity;
-
-        // arbitrary settings
+        this.game = owner.game;
+        
+        // arbitrary settings        
         this.radius = 20;
+        // sets spaceship center
         const x = this.pos[0] + this.radius;
         const y = this.pos[1] + this.radius;
         this.pos = [x, y];
@@ -26,27 +28,20 @@ export class Spaceship {
             this.image.src = "./src/assets/spaceships/blue_jet.png";
         }
 
-        // selects canvas and context
-        this.canvas = document.querySelector("canvas");
-        this.ctx = this.canvas.getContext("2d");
-
-        // annihilates
-        this.fire();
-    }
-
-    fire() {
-        this.spaceship = setInterval(()=>{
-            this.updatePos();
-            this.draw();
-            if (this.pos === this.endPos) {
-                clearInterval(this.spaceship);
-            }
-        }, 1);
+        // add spaceship to array of spaceships to be animated
+        this.owner.game.spaceships.push(this);
     }
     
-    draw() {
+    step(ctx) {
+        // moves spaceship
+        this.updatePos();
+        this.draw(ctx);
+    }
+    
+    draw(ctx) {
+
         // draws spaceship
-        this.ctx.drawImage(this.image,   0, 0,   1080, 1080, ...this.pos, this.radius*2, this.radius*2);
+        ctx.drawImage(this.image,   0, 0,   1080, 1080, ...this.pos, this.radius*2, this.radius*2);
         //                |  src_img  | src_dim | src_size |   ctx_pos   |           ctx_dim          |
     }
         

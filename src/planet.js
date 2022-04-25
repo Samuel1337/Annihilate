@@ -12,12 +12,12 @@ export class Planet {
         this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         this.underAttack = false;
-
+        
         // core gameplay settings
         this.population = 30;
         this.cap = owner.cap;
         this.rate = owner.rate;
-
+        
         // random choice of planet sprite from ./assets/planets
         const imgIdx = Math.floor(Math.random() * (12));
         
@@ -25,6 +25,7 @@ export class Planet {
         this.image = new Image();
         this.image.src = `./src/assets/planets/planet_${imgIdx}.png`;
         this.frameIdx = 0;
+        this.slowdown = 0;
 
         // selects canvas and context
         this.canvas = document.querySelector("canvas");
@@ -37,7 +38,8 @@ export class Planet {
         this.dx = 0;
         this.dy = 0;
         this.distance = 1000;
-
+        
+        this.isMouseOn();
         this.selected = false;
     }
     
@@ -50,13 +52,14 @@ export class Planet {
     
     draw(ctx) {
         // adds event listener that highlights the planet (hover, click)
-        this.isMouseOn();
         if (this.selected) {
             this.highlight();
         }
 
         // draws planet
-        this.drawOutline(ctx);
+        // if (this.color != "gray") {
+            this.drawOutline(ctx);
+        // }
         this.drawImage(ctx);
         
         // draws the number of fighters on the planet
@@ -66,7 +69,11 @@ export class Planet {
     frame() {
         // crops the sprite image into frames and iterates through them
         let frame = 300*this.frameIdx;
-        this.frameIdx++;
+        this.slowdown++;
+        if (this.slowdown === 5) {
+            this.slowdown = 0;
+            this.frameIdx++;
+        }
         if (this.frameIdx === 50) {
             this.frameIdx = 0;
         }
@@ -163,7 +170,7 @@ export class Planet {
             // calculates radial distance between planet and mouse
 
             if (this.distance > this.radius) {
-                // no mouse uses default color around planet
+                // no mouse. uses default color around planet
                 this.mouseOn = false;
                 this.color = this.defaultColor;
                 this.game.mouseOnElement[this.id] = "_";
@@ -171,45 +178,10 @@ export class Planet {
                 // mouse over! highlights planet in yellow
                 this.mouseOn = true;
                 this.color = "yellow";
+                this.game.currentPlanet = this;
                 this.game.mouseOnElement[this.id] = this.id;
             }           
             
-        });
-        window.addEventListener("mousedown",(evt) => {
-            
-            if (this.clicked === false) {
-                // prevents capturing more than 1 click
-
-                if (this.game.mouseOnElement.every(el => { return el === "_" })) {
-                    // when clicking on empty space
-                    this.resetSelection();
-                }
-                if (this.game.mouseOnElement.includes(this.id)) {
-                    // when clicking on unselected planet  
-                    
-                    if (this.game.selectedElements === 0) {
-                        // when this is the first planet to be selected
-                        this.addSelection("first");
-                    } else {
-                        // when this is the second planet to be selected
-                        this.addSelection("second");
-                        setTimeout(()=>{
-                            this.resetSelection();
-                        },1000);
-                    }
-                } else {
-                    // when clicking on another planet while this one is selected  
-                    if (this.selected) {
-                        setTimeout(()=>{
-                            this.resetSelection();
-                        },1000);
-                    }
-                }
-                this.clicked = true; // prevents capturing more than 1 click
-            }
-        });
-        window.addEventListener("mouseup",(evt) => {
-            this.clicked = false; // allows planet to be clicked on again
         });
     }
     
@@ -227,7 +199,6 @@ export class Planet {
         this.game.selector.defaultTargets();
         this.game.selectedElements = 0;
         this.selected = false;
-        this.clicked = false;
     }
 
     highlight() {
