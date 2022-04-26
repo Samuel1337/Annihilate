@@ -3,26 +3,31 @@ import { Spaceship } from "./spaceship";
 export class Attack {
     constructor(startPlanet, endPlanet) {
         this.startPlanet = startPlanet;
+        this.owner = startPlanet.owner;
         this.endPlanet = endPlanet;
         this.startPos = startPlanet.center;
         this.endPos = endPlanet.center;
-
+        this.numOfSpaceships = startPlanet.population;
+        this.spaceships = [];
         this.velocity = this.getVelocity();
         this.launchAttack();
     }
     launchAttack() {
         let that = this;
         console.log("fire!")
+        this.startPlanet.underAttack = true;
         this.launch = setInterval(() => {
-                this.startPlanet.underAttack = true;
-                this.endPlanet.underAttack = true;
                 this.startPlanet.population -= 1;
+                this.numOfSpaceships -= 1;
                 
-                new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, that.getVelocity());
-                
-                if (this.startPlanet.population <= 0) {
+                const spaceship = new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
+                this.spaceships.push(spaceship);
+
+                if (this.numOfSpaceships <= 1) {
                     this.startPlanet.underAttack = false;
                     this.startPlanet.attackBatch = null;
+                    clearInterval(this.launch);
+                } else if (this.startPlanet.population <= 0) {
                     clearInterval(this.launch);
                 }
         }, 350); // spacing between spaceships

@@ -45,6 +45,7 @@ export class Game {
         this.spaceships.forEach(spaceship => {
             spaceship.step(this.ctx);
         });
+        // this.checkForCollision();
         window.requestAnimationFrame(this.animate.bind(this));
     }
 
@@ -181,7 +182,33 @@ export class Game {
             });
         }
     }
-    
+
+    checkForCollision() {
+        for (let i = 0; i < this.spaceships.length-1; i++) {
+            const spaceship1 = this.spaceships[i];
+            const spaceship2 = this.spaceships[i+1];
+            
+            if (spaceship1.owner === spaceship2.owner) {
+                if (spaceship1.isCollidedWith(spaceship2)) {
+                    this.destroy(spaceship1, spaceship2);
+                }
+            }
+        }
+    }
+
+    destroy(...deadSpaceships) {
+        deadSpaceships.forEach(el => {
+            const idx = this.spaceships.indexOf(el);
+            this.spaceships[idx] = null;
+        })
+        
+        const arr = this.spaceships.filter(el => {
+            return el !== null;
+        })
+
+        this.spaceships = arr;
+    }
+
     static randomPos() {
         let canvas = document.querySelector("canvas");
         let width = Math.random()*(canvas.width-250)+75;

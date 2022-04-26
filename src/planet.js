@@ -14,9 +14,10 @@ export class Planet {
         this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         this.underAttack = false;
-        
+        this.planetSpeed = 5;
+
         // core gameplay settings
-        this.population = 30;
+        this.population = 20;
         this.cap = owner.cap;
         this.rate = owner.rate;
         this.slowdownRate = 0;
@@ -53,7 +54,7 @@ export class Planet {
     
     step(ctx) {
         this.draw(ctx);
-        if (!this.underAttack) {
+        if (!this.underAttack && this.population < this.cap) {
             this.growPopulation();
         }
     }
@@ -78,7 +79,7 @@ export class Planet {
         // crops the sprite image into frames and iterates through them
         let frame = 300*this.frameIdx;
         this.slowdownFrame++;
-        if (this.slowdownFrame === 5) {
+        if (this.slowdownFrame === this.planetSpeed) {
             this.slowdownFrame = 0;
             this.frameIdx++;
         }
@@ -116,21 +117,15 @@ export class Planet {
         ctx.fillStyle = "black";
         ctx.font = 'bold 16px sans-serif';
         ctx.textAlign = "center";
-        // ctx.textBaseline = "hanging";
         ctx.fillText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
-        
     }
 
     growPopulation() {
         this.slowdownRate += 1;
         // increments planet population to its peak
-        if (this.population >= this.cap) {
-            this.population = this.cap;
-        } else {
-            if (this.slowdownRate >= 3) {
-                this.population += this.rate;
-                this.slowdownRate = 0;
-            }
+        if (this.slowdownRate >= 10) {
+            this.population += this.rate;
+            this.slowdownRate = 0;
         }
     }
 
@@ -166,6 +161,16 @@ export class Planet {
             return false;
         }
     }
+
+    processAttack(attackBatch) {
+        this.underAttack = true;
+        if (attackBatch.length === 1) {
+            setTimeout(()=>{
+                this.underAttack = false;
+            }, 500)
+        }
+
+    }
     
     isMouseOn() {
         const rect = this.canvas.getBoundingClientRect();
@@ -198,11 +203,14 @@ export class Planet {
     }
     
     attack(targetPlanet) {
+        // clears current attack if any and begins a new one
         if (this.attackBatch instanceof Attack) {
             clearInterval(this.attackBatch.launch);
         }
         this.attackBatch = new Attack(this, targetPlanet);
     }
+
+    
 
     addSelection(target) {
         if (target === "first") {

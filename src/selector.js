@@ -37,12 +37,12 @@ export class Selector {
 
   draw(ctx) {
     if (this.secondPos != this.defaultPos && this.secondPlanet != this.firstPlanet) {
-      ctx.strokeStyle = this.firstPlanet.color;
-      ctx.beginPath();
-      ctx.moveTo(...this.firstPos);
-      ctx.lineTo(...this.secondPos);
-      ctx.closePath();
-      ctx.stroke();
+      // ctx.strokeStyle = this.firstPlanet.color;
+      // ctx.beginPath();
+      // ctx.moveTo(...this.firstPos);
+      // ctx.lineTo(...this.secondPos);
+      // ctx.closePath();
+      // ctx.stroke();
       if (this.attacked == false) {
         this.firstPlanet.attack(this.secondPlanet);
         this.attacked = true;

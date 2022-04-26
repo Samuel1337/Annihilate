@@ -1,15 +1,16 @@
 export class Spaceship {
-    constructor(startPlanet, endPlanet, owner, velocity) {
+    constructor(startPlanet, endPlanet, owner, velocity, attackBatch) {
         // basic settings
         this.startPlanet = startPlanet;
         this.endPlanet = endPlanet;
-        this.pos = startPlanet.pos;
         this.startPos = startPlanet.pos;
         this.endPos = endPlanet.pos;
+        this.pos = startPlanet.pos;
         this.owner = owner;
         this.velocity = velocity;
+        this.attackBatch = attackBatch;
         this.game = owner.game;
-        
+
         // arbitrary settings        
         this.radius = 20;
         this.alive = true;
@@ -43,7 +44,7 @@ export class Spaceship {
                 this.updatePos();
             this.draw(ctx);
             } else {
-                this.explode();
+                this.hitPlanet();
             }
         }
     }
@@ -74,38 +75,43 @@ export class Spaceship {
         }
     }
     
-    explode() {
+    hitPlanet() {
         if (this.endPlanet.population > 0) {
-            if (this.endPlanet.owner === this.startPlanet.owner) {
-                this.endPlanet.underAttack = false;
+            if (this.endPlanet.owner === this.owner) {
+                // this.endPlanet.underAttack = false;
                 this.endPlanet.population += 1;
             } else {
-                this.endPlanet.population -= 1;
+                console.log(this.endPlanet.underAttack);
+                this.endPlanet.processAttack(this.attackBatch);
+                if (this.endPlanet.population > 0) {
+                    this.endPlanet.population -= 1;
+                }
             }
         } else {
+            this.attackBatch.spaceships.unshift();
             this.conquer();
         }
         this.alive = false;
     }
 
     conquer() {
-        this.endPlanet.owner = this.startPlanet.owner;
-        this.endPlanet.defaultColor = this.startPlanet.owner.color;
-        this.endPlanet.color = this.startPlanet.owner.color;
-        this.endPlanet.cap = this.startPlanet.owner.cap;
-        this.endPlanet.rate = this.startPlanet.owner.rate;
+        this.endPlanet.owner = this.owner;
+        this.endPlanet.defaultColor = this.owner.color;
+        this.endPlanet.color = this.owner.color;
+        this.endPlanet.cap = this.owner.cap;
+        this.endPlanet.rate = this.owner.rate;
+        this.endPlanet.underAttack = false;
     }
 
     isCollidedWith(otherSpaceship) {
         // checks for collision
-        console.log("collision check");
-        const dx = (this.pos[0] + this.radius) - (otherSpaceship.pos[0] + otherSpaceship.radius);
-        const dy = (this.pos[1] + this.radius) - (otherSpaceship.pos[1] + otherSpaceship.radius);
+        const dx = (this.pos[0]) - (otherSpaceship.pos[0]);
+        const dy = (this.pos[1]) - (otherSpaceship.pos[1]);
         const distance = Math.sqrt(dx * dx + dy * dy);
     
         if (distance < this.radius + otherSpaceship.radius) {
             // collision detected!
-            console.log("Collision!");
+            console.log("collision!")
             return true;
         } else {
             // no collision
