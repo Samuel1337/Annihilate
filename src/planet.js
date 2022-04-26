@@ -49,7 +49,8 @@ export class Planet {
 
         // attack manager
         this.attackBatch = null;
-
+        this.incomingAttackers = [];
+        this.wait = null;
     }
     
     step(ctx) {
@@ -163,11 +164,12 @@ export class Planet {
     }
 
     processAttack(attackBatch) {
+        clearTimeout(this.wait);
         this.underAttack = true;
-        if (attackBatch.length === 1) {
-            setTimeout(()=>{
+        if (this.incomingAttackers.length <= 1) {
+            this.wait = setTimeout(()=>{
                 this.underAttack = false;
-            }, 500)
+            }, 800)
         }
 
     }

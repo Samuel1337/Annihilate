@@ -21,7 +21,7 @@ export class Attack {
                 this.numOfSpaceships -= 1;
                 
                 const spaceship = new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
-                this.spaceships.push(spaceship);
+                this.endPlanet.incomingAttackers.push(spaceship);
 
                 if (this.numOfSpaceships <= 1) {
                     this.startPlanet.underAttack = false;
