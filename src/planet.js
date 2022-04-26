@@ -1,3 +1,5 @@
+import { Attack } from "./attack";
+
 export class Planet {
     constructor(pos, owner, id, game) {
         // basic planet settings
@@ -40,8 +42,13 @@ export class Planet {
         this.dy = 0;
         this.distance = 1000;
         
+        // event handler
         this.isMouseOn();
         this.selected = false;
+
+        // attack manager
+        this.attackBatch = null;
+
     }
     
     step(ctx) {
@@ -190,6 +197,13 @@ export class Planet {
         });
     }
     
+    attack(targetPlanet) {
+        if (this.attackBatch instanceof Attack) {
+            clearInterval(this.attackBatch.launch);
+        }
+        this.attackBatch = new Attack(this, targetPlanet);
+    }
+
     addSelection(target) {
         if (target === "first") {
             this.game.selector.setFirstTarget(this);

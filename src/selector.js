@@ -44,7 +44,7 @@ export class Selector {
       ctx.closePath();
       ctx.stroke();
       if (this.attacked == false) {
-        new Attack(this.firstPlanet, this.secondPlanet);
+        this.firstPlanet.attack(this.secondPlanet);
         this.attacked = true;
       }
     }

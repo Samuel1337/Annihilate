@@ -75,9 +75,13 @@ export class Spaceship {
     }
     
     explode() {
-        // this.endPlanet.underAttack = true;
         if (this.endPlanet.population > 0) {
-            this.endPlanet.population -= 1;
+            if (this.endPlanet.owner === this.startPlanet.owner) {
+                this.endPlanet.underAttack = false;
+                this.endPlanet.population += 1;
+            } else {
+                this.endPlanet.population -= 1;
+            }
         } else {
             this.conquer();
         }

@@ -7,31 +7,28 @@ export class Attack {
         this.startPos = startPlanet.center;
         this.endPos = endPlanet.center;
 
-        this.velocity = this.velocity();
+        this.velocity = this.getVelocity();
         this.launchAttack();
     }
     launchAttack() {
-        let attacking = true;
+        let that = this;
         console.log("fire!")
         this.launch = setInterval(() => {
-            if (attacking) {
                 this.startPlanet.underAttack = true;
                 this.endPlanet.underAttack = true;
                 this.startPlanet.population -= 1;
                 
-                new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, this.velocity);
+                new Spaceship(this.startPlanet, this.endPlanet, this.startPlanet.owner, that.getVelocity());
                 
                 if (this.startPlanet.population <= 0) {
                     this.startPlanet.underAttack = false;
-                    this.endPlanet.underAttack = false;
-                    attacking = false;
+                    this.startPlanet.attackBatch = null;
                     clearInterval(this.launch);
                 }
-            }
-        }, 500); // spacing between spaceships
+        }, 350); // spacing between spaceships
         
     }
-    velocity() {
+    getVelocity() {
         // finds the angle
         const dx = this.endPos[0] - this.startPos[0];
         const dy = this.endPos[1] - this.startPos[1];
