@@ -104,6 +104,7 @@ export class Spaceship {
         this.endPlanet.color = this.owner.color;
         this.endPlanet.cap = this.owner.cap;
         this.endPlanet.rate = this.owner.rate;
+        this.endPlanet.incomingAttackers = 0;
         this.endPlanet.underAttack = false;
     }
 

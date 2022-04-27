@@ -1,9 +1,10 @@
 export class Heal {
 
-    constructor(pos, game) {
+    constructor(pos, game, planet) {
         // basic settings
         this.pos = pos;
         this.game = game;
+        this.planet = planet;
 
         // sets up center pos
         const x = this.pos[0];
@@ -36,12 +37,12 @@ export class Heal {
                 this.frameY = 0;
             }
         }
-        
+
         return [x,y];
     }
     
     step(ctx) {
-        ctx.drawImage(this.image, ...this.frame(), 96, 192, ...this.center, 100, 100);
+        ctx.drawImage(this.image, ...this.frame(), 96, 192, ...this.pos, this.planet.radius*2, this.planet.radius*2);
         this.frame();
     }
 }

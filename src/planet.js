@@ -219,7 +219,8 @@ export class Planet {
         if (this.incomingAttackers <= 2) {
             this.wait = setTimeout(()=>{
                 this.underAttack = false;
-                new Heal(this.center, this.game);
+                this.incomingAttackers = 0;
+                new Heal(this.pos, this.game, this);
             }, 800)
         }
     }
