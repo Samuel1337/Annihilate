@@ -14,6 +14,9 @@ export class Game {
         this.space = new Space(this);
         this.player = new Player(this);
         this.ai = new Ai(this);
+        this.spacePlanets = [];
+        this.playerPlanets = [];
+        this.aiPlanets = [];
         
         // sets up planets
         this.planets = [];
@@ -25,6 +28,8 @@ export class Game {
         // handles special effects
         this.explosions = [];
         this.heals = [];
+        this.starsFrameBack = 0;
+        this.starsFrameFront = 0;
 
         // sets up selector
         this.selector = new Selector(canvas);
@@ -60,6 +65,22 @@ export class Game {
         window.requestAnimationFrame(this.animate.bind(this));
     }
 
+    moveStarsBack() {
+        this.starsFrameBack -= 0.1;
+        if (this.starsFrameBack < -960) {
+            this.starsFrameBack = 0;
+        }
+        return this.starsFrameBack;
+    }
+
+    moveStarsFront() {
+        this.starsFrameFront -= 0.2;
+        if (this.starsFrameFront < -960) {
+            this.starsFrameFront = 0;
+        }
+        return this.starsFrameFront;
+    }
+
     background(canvas, ctx) {
         // creates background image
         let background = new Image();
@@ -73,8 +94,16 @@ export class Game {
         ctx.drawImage(background, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(stars, this.moveStarsBack(), 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
+        // draws stars image
+        ctx.drawImage(stars, this.moveStarsBack()+960, 0, 960, 540, 0, 0, canvas.width, canvas.height);
+        
+        // draws stars image
+        ctx.drawImage(stars, this.moveStarsFront(), 50, 960, 540, 0, 0, canvas.width, canvas.height);
+        
+        // draws stars image
+        ctx.drawImage(stars, this.moveStarsFront()+960, 50, 960, 540, 0, 0, canvas.width, canvas.height);
     }
     
     setUpPlanets(num) {
@@ -85,15 +114,20 @@ export class Game {
         while(ready === false) {
             // sets up player and AI
             ready = true;
-            this.planets = [
-                new Planet(Game.leftPos(), this.player, 0, game),
-                new Planet(Game.rightPos(), this.ai, 1, game)
-            ];
+            const playerPlanet = new Planet(Game.leftPos(), this.player, 0, game);
+            const aiPlanet = new Planet(Game.rightPos(), this.ai, 1, game);
+            this.planets = [playerPlanet,aiPlanet];
+            
+            this.playerPlanets = [playerPlanet];
+            this.aiPlanets = [aiPlanet];
+
             let planetId = 2;
             
             for (let i = 0; i < num; i++) {
                 // sets up free planets
-                this.planets.push(new Planet(Game.randomPos(), this.space, planetId, game));
+                const planet = new Planet(Game.randomPos(), this.space, planetId, game)
+                this.planets.push(planet);
+                this.spacePlanets.push(planet);
                 planetId += 1;
             }
             

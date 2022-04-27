@@ -11,5 +11,5 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.height = window.innerHeight - 200;
   
   // plays the game
-  new GameView(canvas, ctx);
+  new GameView(canvas, ctx).start();
 });

@@ -4,5 +4,12 @@ export class Ai {
         this.cap = 30*level;
         this.rate = 1;
         this.game = game;
+
+        this.gamePlanets = 
+        this.myPlanets = [];
+    }
+
+    watchForWeakPlanet() {
+        
     }
 }
