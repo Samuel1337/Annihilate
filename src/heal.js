@@ -33,6 +33,21 @@ export class Heal {
         this.slowdown += 1;
 
         if (this.slowdown === 10) {
+            this.frameX += 1;
+            
+            if (this.frameX > 5) {
+                this.frameX = 0;
+                this.frameY += 1;
+                
+                if (this.frameY > 3) {
+                    this.frameX = 0;
+                    this.frameY = 0;
+                }
+            }
+            this.slowdown = 0;
+        }
+
+        if (this.slowdown === 10) {
             // increments X
             if (this.frameX < 5) {
                 this.frameX += 1;

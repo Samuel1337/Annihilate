@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = window.innerWidth - 500;
   canvas.height = window.innerHeight - 200;
   
-  // loads fonts
-  console.log(window.innerWidth);
-  //creates game and gameView
-  const game = new Game(canvas, ctx, 9);
-  new GameView(game, ctx).start();
+  // plays the game
+  new GameView(canvas, ctx);
 });
