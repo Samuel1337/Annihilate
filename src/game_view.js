@@ -31,17 +31,24 @@ export class GameView {
         
         if (this.slowdown === 7) {
             this.frameX += 1;
-            
-            if (this.frameX > 24) {
+            if (this.frameX >= 50) {
                 this.frameX = 0;
-                this.frameY += 1;
-                
-                if (this.frameY > 1) {
-                    this.frameY = 0;
-                }
             }
-            this.slowdown = 0;
         }
+
+        // if (this.slowdown === 7) {
+        //     this.frameX += 1;
+            
+        //     if (this.frameX > 24) {
+        //         this.frameX = 0;
+        //         this.frameY += 1;
+                
+        //         if (this.frameY > 1) {
+        //             this.frameY = 0;
+        //         }
+        //     }
+        //     this.slowdown = 0;
+        // }
         let x = 300 * this.frameX;
         let y = 300 * this.frameY;
         

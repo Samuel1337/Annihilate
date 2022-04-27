@@ -215,7 +215,6 @@ export class Planet {
     processAttack() {
         clearTimeout(this.wait);
         this.underAttack = true;
-        console.log(this.incomingAttackers);
         if (this.incomingAttackers <= 1) {
             this.wait = setTimeout(()=>{
                 this.underAttack = false;

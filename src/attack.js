@@ -17,8 +17,10 @@ export class Attack {
         console.log("fire!")
         this.startPlanet.underAttack = true;
         this.launch = setInterval(() => {
-                this.startPlanet.population -= 1;
-                this.numOfSpaceships -= 1;
+                if (this.startPlanet.population > 0) {
+                    this.startPlanet.population -= 1;
+                    this.numOfSpaceships -= 1;
+                }
                 
                 new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
                 this.endPlanet.incomingAttackers += 1;

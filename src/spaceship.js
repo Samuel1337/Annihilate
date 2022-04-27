@@ -92,7 +92,6 @@ export class Spaceship {
                 new Explosion(this.pos, this.game);
             }
         } else {
-            console.log(this.endPlanet.incomingAttackers);
             this.endPlanet.incomingAttackers -= 1;
             this.endPlanet.processAttack(); // true makes .conquer override .processAttack
             this.conquer();
@@ -108,6 +107,8 @@ export class Spaceship {
         this.endPlanet.cap = this.owner.cap;
         this.endPlanet.rate = this.owner.rate;
         this.endPlanet.underAttack = false;
+
+        
     }
 
     isCollidedWith(otherSpaceship) {

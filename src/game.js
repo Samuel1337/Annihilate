@@ -134,6 +134,10 @@ export class Game {
             if (!this.looksNice()) {
                 // checks to see if no planets are overlapping
                 ready = false;
+                this.spacePlanets = [];
+                this.playerPlanets = [];
+                this.aiPlanets = [];
+
                 if (count === 100) {
                     // tries 100 times before readjusting the number of planets
                     console.log("red light!");
@@ -178,23 +182,24 @@ export class Game {
                     this.planets.forEach(planet => { planet.resetSelection() })
                 } else {
                     console.log("clicked unselected planet");
-                    console.log(this.currentPlanet.selected);
+                    console.log(this.currentPlanet);
                     // when clicking on unselected planet  
 
-                    if (this.selectedElements === 0) {
-                        console.log("first planet selected");
-                        // when this is the first planet to be selected
-
-                        this.currentPlanet.addSelection("first");
-                    } else {
-                        console.log("second planet selected");
-                        // when this is the second planet to be selected
-
-                        this.currentPlanet.addSelection("second");
-                        setTimeout(()=>{
-                            this.currentPlanet.resetSelection();
-                        },500);
-                    }
+                        if (this.selectedElements === 0) {
+                            console.log("first planet selected");
+                            // when this is the first planet to be selected
+                            if (this.currentPlanet.owner instanceof Player) {
+                                this.currentPlanet.addSelection("first");
+                            }
+                        } else {
+                            console.log("second planet selected");
+                            // when this is the second planet to be selected
+                            
+                            this.currentPlanet.addSelection("second");
+                            setTimeout(()=>{
+                                this.currentPlanet.resetSelection();
+                            },500);
+                        }
                 }
                 if (this.currentPlanet.selected && this.selectedElements > 1) {
                     console.log("clicked on another planet")
