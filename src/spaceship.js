@@ -80,15 +80,14 @@ export class Spaceship {
             if (this.endPlanet.owner === this.owner) {
                 this.endPlanet.population += 1;
             } else {
-                console.log(this.endPlanet.underAttack);
+                this.endPlanet.population -= 1;
+                this.endPlanet.incomingAttackers -= 1;
                 this.endPlanet.processAttack();
-                this.destroy();
-                if (this.endPlanet.population > 0) {
-                    this.endPlanet.population -= 1;
-                }
             }
         } else {
-            this.endPlanet.incomingAttackers.unshift();
+            console.log(this.endPlanet.incomingAttackers);
+            this.endPlanet.incomingAttackers -= 1;
+            this.endPlanet.processAttack();
             this.conquer();
         }
         this.alive = false;
@@ -116,17 +115,6 @@ export class Spaceship {
         } else {
             // no collision
             return false;
-        }
-    }
-
-    destroy() {
-        for (let i = 0; i < this.endPlanet.incomingAttackers.length; i++) {
-            const spaceship = this.endPlanet.incomingAttackers[i];
-            if (spaceship === this){
-                const first = this.endPlanet.incomingAttackers[0];
-                this.endPlanet.incomingAttackers[i] = first;
-                this.endPlanet.incomingAttackers.shift();
-            }
         }
     }
 }

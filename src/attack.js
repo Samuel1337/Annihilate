@@ -20,10 +20,10 @@ export class Attack {
                 this.startPlanet.population -= 1;
                 this.numOfSpaceships -= 1;
                 
-                const spaceship = new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
-                this.endPlanet.incomingAttackers.push(spaceship);
+                new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
+                this.endPlanet.incomingAttackers += 1;
 
-                if (this.numOfSpaceships <= 1) {
+                if (this.numOfSpaceships <= 0) {
                     this.startPlanet.underAttack = false;
                     this.startPlanet.attackBatch = null;
                     clearInterval(this.launch);

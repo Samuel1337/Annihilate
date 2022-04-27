@@ -11,12 +11,12 @@ export class Planet {
         this.color = owner.color;
         
         // adjusts planet size to the window width
-        if (window.innerWidth > 1500) {
+        if (game.canvas.height > 550) {
             this.radius = 40;
         } else {
             this.radius = 30;
         }
-        console.log(this.radius);
+
         // arbitrary planet settings
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         this.underAttack = false;
@@ -55,7 +55,7 @@ export class Planet {
 
         // attack manager
         this.attackBatch = null;
-        this.incomingAttackers = [];
+        this.incomingAttackers = 0;
         this.wait = null;
     }
     
@@ -172,10 +172,11 @@ export class Planet {
         }
     }
 
-    processAttack(attackBatch) {
+    processAttack() {
+        // console.log(this.incomingAttackers);
         clearTimeout(this.wait);
         this.underAttack = true;
-        if (this.incomingAttackers.length <= 1) {
+        if (this.incomingAttackers <= 0) {
             this.wait = setTimeout(()=>{
                 this.underAttack = false;
             }, 800)
