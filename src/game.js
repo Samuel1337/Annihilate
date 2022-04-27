@@ -59,10 +59,10 @@ export class Game {
         stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
         
         // draws background image
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width*2, canvas.height*2);
+        ctx.drawImage(background, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width*1.5, canvas.height*1.5);
+        ctx.drawImage(stars, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
     }
     

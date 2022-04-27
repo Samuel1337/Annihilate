@@ -10,8 +10,14 @@ export class Planet {
         this.defaultColor = owner.color;
         this.color = owner.color;
         
+        // adjusts planet size to the window width
+        if (window.innerWidth > 1500) {
+            this.radius = 40;
+        } else {
+            this.radius = 30;
+        }
+        console.log(this.radius);
         // arbitrary planet settings
-        this.radius = 30;
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         this.underAttack = false;
         this.planetSpeed = 5;

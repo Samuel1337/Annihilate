@@ -11,19 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.height = window.innerHeight - 200;
   
   // loads fonts
-  // loadFonts();
-
+  console.log(window.innerWidth);
   //creates game and gameView
   const game = new Game(canvas, ctx, 9);
   new GameView(game, ctx).start();
 });
-
-async function loadFonts() {
-  const font = new FontFace('pressStart', 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-  // wait for font to be loaded
-  await font.load();
-  // add font to document
-  document.fonts.add(font);
-  // enable font with CSS class
-  document.body.classList.add('fonts-loaded');
-}

@@ -16,12 +16,12 @@ export class Spaceship {
         this.alive = true;
 
         // sets spaceship center
-        const x = this.pos[0] + this.radius/2;
-        const y = this.pos[1] + this.radius/2;
+        const x = this.pos[0] + this.startPlanet.radius - this.radius;
+        const y = this.pos[1] + this.startPlanet.radius - this.radius;
         this.pos = [x, y];
 
-        const endX = this.endPos[0] + this.radius/2;
-        const endY = this.endPos[1] + this.radius/2;
+        const endX = this.endPos[0] + this.startPlanet.radius - this.radius;
+        const endY = this.endPos[1] + this.startPlanet.radius - this.radius;
         this.endPos = [endX, endY];
 
 
