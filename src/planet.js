@@ -98,6 +98,8 @@ export class Planet {
     
     drawOutline(ctx) {
         // sets up colored outline
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 5;
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(...this.center,this.radius+2,0,2*Math.PI);
