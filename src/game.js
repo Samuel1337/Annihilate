@@ -43,6 +43,10 @@ export class Game {
     animate() {
         this.background(this.canvas, this.ctx);
         this.selector.draw(this.ctx);
+        
+        this.heals.forEach(heal => {
+            heal.step(this.ctx);
+        });
         this.planets.forEach(planet => {
             planet.step(this.ctx);
         });
@@ -51,9 +55,6 @@ export class Game {
         });
         this.explosions.forEach(explosion => {
             explosion.step(this.ctx);
-        });
-        this.heals.forEach(heal => {
-            heal.step(this.ctx);
         });
         // this.checkForCollision();
         window.requestAnimationFrame(this.animate.bind(this));
