@@ -22,6 +22,10 @@ export class Game {
         // sets up spaceships
         this.spaceships = [];
         
+        // handles special effects
+        this.explosions = [];
+        this.heals = [];
+
         // sets up selector
         this.selector = new Selector(canvas);
         this.currentPlanet = this.planets[0];
@@ -44,6 +48,12 @@ export class Game {
         });
         this.spaceships.forEach(spaceship => {
             spaceship.step(this.ctx);
+        });
+        this.explosions.forEach(explosion => {
+            explosion.step(this.ctx);
+        });
+        this.heals.forEach(heal => {
+            heal.step(this.ctx);
         });
         // this.checkForCollision();
         window.requestAnimationFrame(this.animate.bind(this));

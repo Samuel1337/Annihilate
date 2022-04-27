@@ -1,3 +1,6 @@
+import { Explosion } from "./explosion";
+import { Heal } from "./heal";
+
 export class Spaceship {
     constructor(startPlanet, endPlanet, owner, velocity, attackBatch) {
         // basic settings
@@ -83,12 +86,14 @@ export class Spaceship {
                 this.endPlanet.population -= 1;
                 this.endPlanet.incomingAttackers -= 1;
                 this.endPlanet.processAttack();
+                new Explosion(this.pos, this.game);
             }
         } else {
             console.log(this.endPlanet.incomingAttackers);
             this.endPlanet.incomingAttackers -= 1;
-            this.endPlanet.processAttack();
+            this.endPlanet.processAttack(); // true makes .conquer override .processAttack
             this.conquer();
+            new Explosion(this.pos, this.game);
         }
         this.alive = false;
     }

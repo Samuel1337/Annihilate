@@ -1,4 +1,5 @@
 import { Attack } from "./attack";
+import { Heal } from "./heal";
 
 export class Planet {
     constructor(pos, owner, id, game) {
@@ -172,17 +173,6 @@ export class Planet {
         }
     }
 
-    processAttack() {
-        // console.log(this.incomingAttackers);
-        clearTimeout(this.wait);
-        this.underAttack = true;
-        if (this.incomingAttackers <= 0) {
-            this.wait = setTimeout(()=>{
-                this.underAttack = false;
-            }, 800)
-        }
-
-    }
     
     isMouseOn() {
         const rect = this.canvas.getBoundingClientRect();
@@ -221,9 +211,19 @@ export class Planet {
         }
         this.attackBatch = new Attack(this, targetPlanet);
     }
-
     
-
+    processAttack() {
+        clearTimeout(this.wait);
+        this.underAttack = true;
+        console.log(this.incomingAttackers);
+        if (this.incomingAttackers <= 2) {
+            this.wait = setTimeout(()=>{
+                this.underAttack = false;
+                new Heal(this.center, this.game);
+            }, 800)
+        }
+    }
+    
     addSelection(target) {
         if (target === "first") {
             this.game.selector.setFirstTarget(this);
@@ -233,7 +233,7 @@ export class Planet {
         this.game.selectedElements += 1;
         this.selected = true;
     }
-
+    
     resetSelection() {
         this.game.selector.defaultTargets();
         this.game.selectedElements = 0;
