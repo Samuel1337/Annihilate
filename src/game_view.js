@@ -9,27 +9,27 @@ export class GameView {
         this.frameY = 0;
 
         this.image = new Image();
-        this.image.src = "./src/assets/black_hole/black_hole.png";
-        requestAnimationFrame(this.animate.bind(this));    
+        this.image.src = "./src/assets/black_hole/galaxy.png";
+        this.slowdown = 0;
+        this.animate();
     }
     
     start() {
         this.game = new Game(this.canvas, this.ctx, 9);
+        cancelAnimationFrame(this.animation);
     }
-
+    
     animate() {
-        console.log(this.canvas);
+        // console.log(this.canvas);
         this.drawLogo();
-        requestAnimationFrame(this.animate.bind(this));    
+        this.animation = requestAnimationFrame(this.animate.bind(this));    
     }
 
     frame() {
-        const x = 300 * this.frameX;
-        const y = 300 * this.frameY;
-
+        
         this.slowdown += 1;
-
-        if (this.slowdown === 10) {
+        
+        if (this.slowdown === 7) {
             this.frameX += 1;
             
             if (this.frameX > 24) {
@@ -37,13 +37,15 @@ export class GameView {
                 this.frameY += 1;
                 
                 if (this.frameY > 1) {
-                    this.frameX = 0;
                     this.frameY = 0;
                 }
             }
             this.slowdown = 0;
         }
+        let x = 300 * this.frameX;
+        let y = 300 * this.frameY;
         
+        console.log(x,y);
         return [x,y];
     }
 
@@ -51,10 +53,19 @@ export class GameView {
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        console.log(this.image);
-        console.log(...this.frame());
-        console.log(this.canvas.width/2 - 150);
+        // console.log(this.image);
+        // console.log(this.canvas.width/2 - 150);
 
-        this.ctx.drawImage(this.image, ...this.frame(), this.canvas.width/2 - 150, this.canvas.height/2 - 150, 300, 300);
+        this.ctx.drawImage(
+            // source image
+            this.image,
+            // source position
+            ...this.frame(),
+            // source dimension
+            300, 300,
+            // ctx position
+            this.canvas.width/2 - 300, this.canvas.height/2 - 300,
+            // ctx dimension
+            600, 600);
     } 
 }

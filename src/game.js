@@ -13,7 +13,7 @@ export class Game {
         // sets up players
         this.space = new Space(this);
         this.player = new Player(this);
-        this.ai = new Ai(this);
+        this.ai = new Ai(this,1);
         this.spacePlanets = [];
         this.playerPlanets = [];
         this.aiPlanets = [];

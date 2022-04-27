@@ -118,17 +118,17 @@ export class Planet {
     drawPopulation(ctx) {
         // draws white backdrop
         ctx.strokeStyle = "white";
-        ctx.font = 'bold 16px sans-serif';
+        ctx.font = 'bold 18px sans-serif';
         ctx.textAlign = "center";
         // ctx.textBaseline = "hanging";
-        ctx.lineWidth = 2;
-        ctx.strokeText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
+        ctx.lineWidth = 3;
+        ctx.strokeText(`${this.population}`, this.center[0],this.center[1]-this.radius-7);
         
         // draws black text
         ctx.fillStyle = "black";
-        ctx.font = 'bold 16px sans-serif';
+        ctx.font = 'bold 18px sans-serif';
         ctx.textAlign = "center";
-        ctx.fillText(`${this.population}`, this.center[0],this.center[1]-this.radius-5);
+        ctx.fillText(`${this.population}`, this.center[0],this.center[1]-this.radius-7);
     }
 
     growPopulation() {
