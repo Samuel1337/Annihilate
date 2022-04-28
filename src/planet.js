@@ -75,7 +75,7 @@ export class Planet {
 
         // draws planet
         // if (this.color != "gray") {
-            this.drawOutline(ctx);
+        this.drawOutline(ctx);
         // }
         this.drawImage(ctx);
         

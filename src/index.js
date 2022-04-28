@@ -12,5 +12,4 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // plays the game
   new GameView(canvas, ctx)
-  .start()
 });

@@ -359,7 +359,9 @@ export class Game {
             }
         });
         if (player.length === 0) {
-            return true;
+            return "defeat";
+        } else if (ai.length === 0) {
+            return "victory";
         }
     }
 
