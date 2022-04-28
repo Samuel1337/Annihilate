@@ -13,7 +13,7 @@ export class GameView {
         this.frameY = 0;
 
         this.level = 1;
-        this.difficulty = 1.5;
+        this.difficulty = 1;
 
         this.mainMenu = true;
 
@@ -170,7 +170,7 @@ export class GameView {
         this.ctx.fillText(`Level ${this.level}`, this.canvasCenter[0]-20, this.canvasCenter[0]-10);
         setTimeout(()=>{
             this.start();
-        },1000);
+        },3000);
     }
 
     victoryScreen() {
@@ -186,6 +186,9 @@ export class GameView {
             // ctx dimension
             this.canvas.width, this.canvas.height);
 
+        this.ctx.shadowColor = "white";
+        this.ctx.shadowBlur = 15;
+
         this.ctx.drawImage(
             // source image
             this.victoryText,
@@ -197,6 +200,10 @@ export class GameView {
             (this.canvas.width/2) - (813/2), (this.canvas.height/2) - (254/2),
             // ctx dimension
             813, 254);
+
+        // setTimeout(()=>{
+        //     this.nextLevel();
+        // }, 3000)
     }
 
     defeatScreen() {
@@ -210,7 +217,10 @@ export class GameView {
             // ctx position
             0,0,
             // ctx dimension
-            this.canvas.width, this.canvas.height+300);
+            this.canvas.width, this.canvas.height+150);
+
+        this.ctx.shadowColor = "white";
+        this.ctx.shadowBlur = 15;
 
         this.ctx.drawImage(
             // source image
@@ -226,6 +236,7 @@ export class GameView {
     }
 
     makeBlackBacground() {
+        this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }

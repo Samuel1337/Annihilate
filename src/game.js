@@ -398,7 +398,7 @@ export class Game {
     endingScreen(result) {
         console.log("the end");
         setTimeout(()=>{
-                    window.cancelAnimationFrame(this.animation);
+                window.cancelAnimationFrame(this.animation);
                 if (result === "victory") {
                     console.log("victory");
                     this.gameView.victoryScreen();
