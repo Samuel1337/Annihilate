@@ -71,6 +71,7 @@ export class Game {
         });
         this.checkForBattle();
         this.drawMusicIcon();
+        this.checkForVictory();
         window.requestAnimationFrame(this.animate.bind(this));
     }
 
@@ -326,6 +327,43 @@ export class Game {
     }
 
     mouseOnMusicIcon(evt) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.mousePos = [
+            evt.clientX - rect.left,
+            evt.clientY - rect.top
+        ];
+        // gets mouse's relative position to the canvas
+        
+        this.dx = (this.canvas.width - 64) - (this.mousePos[0]);
+        this.dy = (32) - (this.mousePos[1]);
+        this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        // calculates radial distance between planet and mouse
+
+        if (this.distance > 32) {
+            // no mouse. uses default color around planet
+            return false;
+        } else {
+            // mouse over! highlights planet in yellow
+            return true;
+        }    
+    }
+
+    checkForVictory() {
+        let player = [];
+        let ai = [];
+        this.planets.forEach(planet => {
+            if (planet.owner instanceof Player) {
+                player.push(planet);
+            } else if (planet.owner instanceof Ai) {
+                ai.push(planet);
+            }
+        });
+        if (player.length === 0) {
+            return true;
+        }
+    }
+
+    mouseOnNextButton(evt) {
         const rect = this.canvas.getBoundingClientRect();
         this.mousePos = [
             evt.clientX - rect.left,
