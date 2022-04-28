@@ -18,6 +18,8 @@ export class Game {
         this.spacePlanets = [];
         this.playerPlanets = [];
         this.aiPlanets = [];
+        this.playerCount = 0;
+        this.aiCount = 0;
         
         // sets up planets
         this.planets = [];
@@ -72,7 +74,7 @@ export class Game {
         this.checkForBattle();
         this.drawMusicIcon();
         this.checkForVictory();
-        window.requestAnimationFrame(this.animate.bind(this));
+        this.animation = window.requestAnimationFrame(this.animate.bind(this));
     }
 
     moveStarsBack() {
@@ -349,19 +351,25 @@ export class Game {
     }
 
     checkForVictory() {
-        let player = [];
-        let ai = [];
+        let pCount = 0;
+        let aCount = 0;
         this.planets.forEach(planet => {
-            if (planet.owner instanceof Player) {
-                player.push(planet);
-            } else if (planet.owner instanceof Ai) {
-                ai.push(planet);
+            if (planet.owner.color === "aqua") {
+                pCount += 1;
+            } else if (planet.owner.color === "red") {
+                aCount += 1;
             }
         });
-        if (player.length === 0) {
-            return "defeat";
-        } else if (ai.length === 0) {
-            return "victory";
+
+        this.playerCount = pCount;
+        this.aiCount = aCount;
+
+        console.log(`player: ${this.playerCount} ai: ${this.aiCount}`)
+
+        if (this.playerCount === 0) {
+            this.endingScreen("defeat");
+        } else if (this.aiCount === 0) {
+            this.endingScreen("victory");
         }
     }
 
@@ -387,8 +395,21 @@ export class Game {
         }    
     }
 
+    endingScreen(result) {
+        console.log("the end");
+        setTimeout(()=>{
+                    window.cancelAnimationFrame(this.animation);
+                if (result === "victory") {
+                    console.log("victory");
+                    this.gameView.victoryScreen();
+                } else {
+                    console.log("defeat");
+                    this.gameView.defeatScreen();
+                }
+            
+        }, 5000);
+    }
     
-
     sound(src) {
         this.soundFx = document.createElement("audio");
         this.soundFx.src = src;

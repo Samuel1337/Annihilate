@@ -17,7 +17,9 @@ export class Ai {
     
     play() {
         this.aiThinking = setInterval(()=>{
-            this.decideAttack();
+            if (this.game.aiCount > 0) {
+                this.decideAttack();
+            }
         }, 9000);
     }
 

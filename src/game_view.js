@@ -13,7 +13,7 @@ export class GameView {
         this.frameY = 0;
 
         this.level = 1;
-        this.difficulty = 1;
+        this.difficulty = 1.5;
 
         this.mainMenu = true;
 
@@ -40,8 +40,6 @@ export class GameView {
 
         this.defeatText = new Image();
         this.defeatText.src = "./src/assets/texts/defeat_red.png";
-        
-        this.backgroundMusic1.play();
         
         this.waitForClickPLay();
         this.animate();
@@ -173,6 +171,58 @@ export class GameView {
         setTimeout(()=>{
             this.start();
         },1000);
+    }
+
+    victoryScreen() {
+        this.ctx.drawImage(
+            // source image
+            this.victoryImage,
+            // source position
+            0, 0,
+            // source dimension
+            1920, 1080,
+            // ctx position
+            0,0,
+            // ctx dimension
+            this.canvas.width, this.canvas.height);
+
+        this.ctx.drawImage(
+            // source image
+            this.victoryText,
+            // source position
+            0, 0,
+            // source dimension
+            813, 254,
+            // ctx position
+            (this.canvas.width/2) - (813/2), (this.canvas.height/2) - (254/2),
+            // ctx dimension
+            813, 254);
+    }
+
+    defeatScreen() {
+        this.ctx.drawImage(
+            // source image
+            this.defeatImage,
+            // source position
+            0, 0,
+            // source dimension
+            2048, 1280,
+            // ctx position
+            0,0,
+            // ctx dimension
+            this.canvas.width, this.canvas.height+300);
+
+        this.ctx.drawImage(
+            // source image
+            this.defeatText,
+            // source position
+            0, 0,
+            // source dimension
+            813, 254,
+            // ctx position
+            (this.canvas.width/2) - (813/2), (this.canvas.height/2) - (254/2),
+            // ctx dimension
+            813, 254);
     }
 
     makeBlackBacground() {
