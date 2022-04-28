@@ -398,6 +398,7 @@ export class Game {
     endingScreen(result) {
         console.log("the end");
         setTimeout(()=>{
+            if (this.playerCount === 0 || this.aiCount === 0) {    
                 window.cancelAnimationFrame(this.animation);
                 if (result === "victory") {
                     console.log("victory");
@@ -406,7 +407,7 @@ export class Game {
                     console.log("defeat");
                     this.gameView.defeatScreen();
                 }
-            
+            }
         }, 5000);
     }
     
