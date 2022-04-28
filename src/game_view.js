@@ -15,6 +15,8 @@ export class GameView {
         this.level = 1;
         this.difficulty = 1;
 
+        this.mainMenu = true;
+
         this.canvasCenter = [this.canvas.width/2, this.canvas.height/2];
 
         this.image = new Image();
@@ -38,9 +40,10 @@ export class GameView {
 
         this.defeatText = new Image();
         this.defeatText.src = "./src/assets/texts/defeat_red.png";
-
+        
         this.backgroundMusic1.play();
-
+        
+        this.waitForClickPLay();
         this.animate();
     }
     
@@ -54,7 +57,6 @@ export class GameView {
     animate() {
         // console.log(this.canvas);
         this.drawLogo();
-        this.waitForClickPLay();
         this.animation = requestAnimationFrame(this.animate.bind(this));
     }
 
@@ -73,7 +75,6 @@ export class GameView {
         let x = 300 * this.frameX;
         let y = 300 * this.frameY;
         
-        console.log(x,y);
         return [x,y];
     }
 
@@ -111,33 +112,36 @@ export class GameView {
     } 
 
     waitForClickPLay() {
-        if (this.mouseOnPlayButton()) {
-            this.start();
-        }
+        window.addEventListener("mousedown",(evt) => {
+            if (this.mainMenu) {
+                if (this.mouseOnPlayButton(evt)) {
+                    this.nextLevel();
+                    this.mainMenu = false;
+                }
+            }
+        });
     }
 
-    mouseOnPlayButton() {
+    mouseOnPlayButton(evt) {
         const rect = this.canvas.getBoundingClientRect();
-        window.addEventListener("click",(evt) => {
             this.mousePos = [
                 evt.clientX - rect.left,
                 evt.clientY - rect.top
             ];
             // gets mouse's relative position to the canvas
             
-            this.dx = (this.canvas.width/2 + 150) - (this.mousePos[0]);
-            this.dy = (this.canvas.height/2 + 150) - (this.mousePos[1]);
+            this.dx = (this.canvas.width/2) - (this.mousePos[0]);
+            this.dy = (this.canvas.height/2) - (this.mousePos[1]);
             this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
             // calculates radial distance between planet and mouse
 
-            if (this.distance > 50) {
+            if (this.distance > 150) {
                 // no mouse. Do nothing
                 return false;
             } else {
                 // mouse over! Start Game
                 return true;
             }  
-        });  
     }
 
     sound(src) {
@@ -160,12 +164,12 @@ export class GameView {
         return this.difficulty;
     }
 
-    levelScreen() {
+    nextLevel() {
         this.makeBlackBacground();
-        ctx.fillStyle = "white";
-        ctx.font = 'bold 18px sans-serif';
-        ctx.textAlign = "center";
-        ctx.fillText(`Level ${this.level}`, this.canvasCenter[0]-20, this.canvasCenter[0]-10);
+        this.ctx.fillStyle = "white";
+        this.ctx.font = 'bold 18px sans-serif';
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(`Level ${this.level}`, this.canvasCenter[0]-20, this.canvasCenter[0]-10);
         setTimeout(()=>{
             this.start();
         },1000);
