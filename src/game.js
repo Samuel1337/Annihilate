@@ -5,15 +5,16 @@ import { Space } from "./space";
 import { Ai } from "./ai";
 
 export class Game {
-    constructor(canvas, ctx, num) {
+    constructor(gameView, canvas, ctx, num, level=1.5) {
         // basic settings
+        this.gameView = gameView;
         this.canvas = canvas;
         this.ctx = ctx;
         
         // sets up players
         this.space = new Space(this);
         this.player = new Player(this);
-        this.ai = new Ai(this,1);
+        this.ai = new Ai(this,level);
         this.spacePlanets = [];
         this.playerPlanets = [];
         this.aiPlanets = [];
@@ -40,6 +41,13 @@ export class Game {
         // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
         // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
         
+        this.battleSound = new this.sound("./src/assets/music/battle.mp3");
+        this.battle = false;
+        this.mute = false;
+        this.musicIcon = new Image();
+        this.musicIcon.src = "./src/assets/icon/music.png";
+
+
         // plays the game
         this.handleClick();
         window.requestAnimationFrame(this.animate.bind(this));
@@ -61,7 +69,8 @@ export class Game {
         this.explosions.forEach(explosion => {
             explosion.step(this.ctx);
         });
-        // this.checkForCollision();
+        this.checkForBattle();
+        this.drawMusicIcon();
         window.requestAnimationFrame(this.animate.bind(this));
     }
 
@@ -211,6 +220,16 @@ export class Game {
                 }
                 this.clicked = true; // prevents capturing more than 1 click
             }
+            if (this.mouseOnMusicIcon(evt)) {
+                if (this.mute) {
+                    this.mute = false;
+                    this.gameView.backgroundMusic1.play();
+                } else {
+                    this.mute = true;
+                    this.battleSound.stop();
+                    this.gameView.backgroundMusic1.stop();
+                }
+            }
         });
         window.addEventListener("mouseup",(evt) => {
             this.clicked = false; // allows planet to be clicked on again
@@ -284,4 +303,66 @@ export class Game {
     }
     //Math.random() * (max - min) + min;
     
+    checkForBattle() {
+        if (this.battle === true) {
+            if (!this.mute) {
+                this.battleSound.play();
+            }
+        }
+    }
+
+    drawMusicIcon() {
+        if (!this.mute) {
+            this.ctx.shadowColor = "white";
+            this.ctx.shadowBlur = 15;
+        }
+        this.ctx.drawImage(this.musicIcon, 0, 0, 64, 64, this.canvas.width - 64, 32, 32, 32);
+        this.ctx.shadowBlur = 0;
+    }
+
+    muteMusic() {
+        this.mute = true;
+        this.battleSound.stop();
+    }
+
+    mouseOnMusicIcon(evt) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.mousePos = [
+            evt.clientX - rect.left,
+            evt.clientY - rect.top
+        ];
+        // gets mouse's relative position to the canvas
+        
+        this.dx = (this.canvas.width - 64) - (this.mousePos[0]);
+        this.dy = (32) - (this.mousePos[1]);
+        this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        // calculates radial distance between planet and mouse
+
+        if (this.distance > 32) {
+            // no mouse. uses default color around planet
+            return false;
+        } else {
+            // mouse over! highlights planet in yellow
+            return true;
+        }    
+    }
+
+    
+
+    sound(src) {
+        this.soundFx = document.createElement("audio");
+        this.soundFx.src = src;
+        this.soundFx.setAttribute("preload", "auto");
+        this.soundFx.setAttribute("controls", "none");
+        this.soundFx.style.display = "none";
+        this.soundFx.volume = 0.5;
+        document.body.appendChild(this.soundFx);
+        
+        this.play = function(){
+            this.soundFx.play();
+        }
+        this.stop = function(){
+            this.soundFx.pause();
+        }
+    }
 }

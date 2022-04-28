@@ -4,18 +4,31 @@ export class GameView {
     constructor(canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
-
+        
+        this.backgroundMusic0 = new this.sound("./src/assets/music/background0.mp3");
+        this.backgroundMusic1 = new this.sound("./src/assets/music/background1.mp3");
+        this.backgroundMusic2 = new this.sound("./src/assets/music/background2.mp3");
+        
         this.frameX = 0;
         this.frameY = 0;
 
         this.image = new Image();
         this.image.src = "./src/assets/black_hole/galaxy.png";
         this.slowdown = 0;
+
+        this.victoryImage = new Image();
+        this.victoryImage.src = "./src/assets/screens/victory.jpg";
+
+        this.defeatImage = new Image();
+        this.defeatImage.src = "./src/assets/screens/defeat.jpeg";
+
+        this.backgroundMusic1.play();
+
         this.animate();
     }
     
     start() {
-        this.game = new Game(this.canvas, this.ctx, 9);
+        this.game = new Game(this, this.canvas, this.ctx, 9);
         cancelAnimationFrame(this.animation);
     }
     
@@ -75,4 +88,20 @@ export class GameView {
             // ctx dimension
             600, 600);
     } 
+
+    sound(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function(){
+            this.sound.play();
+        }
+        this.stop = function(){
+            this.sound.pause();
+        }
+    }
+
 }

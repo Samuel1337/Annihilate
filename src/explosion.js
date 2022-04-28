@@ -16,6 +16,7 @@ export class Explosion {
         this.image.src = `./src/assets/blue_explosion/img_${this.frameIdx}.png`;
 
         this.game.explosions.push(this);
+        this.game.battle = true;
     }
     
     frame() {
