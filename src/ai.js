@@ -15,61 +15,50 @@ export class Ai {
     play() {
         this.aiThinking = setInterval(()=>{
             this.decideAttack();
-        }, 7000);
+        }, 5000);
     }
 
     decideAttack() {
         const die = this.rollDie();
         this.updatePlanets();
+        this.watchForPotentialPreys();
+        this.watchForPotentialPredators();
+        
+        switch (die) {
+            case 1:
+                this.attackEmpty();
+            break;
+                
+            case 2:
+                this.attackPlayer();
+            break;
+        
+            case 4:
+                this.attackVulnerable();
+                // this.doubleAttackPlayer();
+            break;
 
-        if (die % 2 === 0) {
-            this.watchForPotentialPreys();
-            
-            switch (die) {
-                case 2:
-                    this.attackPlayer();
-                break;
-                    
-                case 4:
-                    this.attackEmpty();
-                break;
-            
-                case 6:
-                    this.wait();
-                break;
-                    
-                default:
-                    this.wait();
-                break;
-            }
-            
-        } else {
-            this.watchForPotentialPredators();
-            
-            switch (die) {
-                case 1:
-                    this.reinforceAlly();
-                break;
-    
-                case 3:
-                    this.doubleAttackPlayer();
-                break;
-                    
-                case 5:
-                    this.wait();
-                break;
-                    
-                default:
-                    this.wait();
-                break;
-            }
+            case 3:
+                this.reinforceAlly();
+                // this.doubleAttackPlayer();
+            break;
+
+            default:
+                this.wait();
+            break;
         }
+        
     }
         
     watchForPotentialPreys() {
         const myStrongest = this.myStrongest();
 
         this.game.playerPlanets.forEach(planet => {
+            if (planet.population < myStrongest) {
+                this.potentialPreys.push(planet);
+            }
+        });
+        this.game.spacePlanets.forEach(planet => {
             if (planet.population < myStrongest) {
                 this.potentialPreys.push(planet);
             }
@@ -102,7 +91,7 @@ export class Ai {
         if (this.game.playerPlanets.length > 0) {
             const playerWeakest = this.playerWeakest();
             const readyPlanets = this.game.aiPlanets.map(planet => {
-                if (planet.population > playerWeakest) {
+                if (planet.population >= playerWeakest) {
                     return planet;
                 }
             });
@@ -112,6 +101,8 @@ export class Ai {
             const targetPlanet = this.game.playerPlanets[targetIdx];
             if (basePlanet && targetPlanet) {
                 basePlanet.attack(targetPlanet);
+            } else {
+                this.attackVulnerable();
             }
         }
     }
@@ -130,35 +121,62 @@ export class Ai {
             const targetPlanet = this.game.spacePlanets[targetIdx];
             if (basePlanet && targetPlanet) {
                 basePlanet.attack(targetPlanet);
+            } else {
+                this.attackVulnerable();
             }
+        }
+    }
+
+    attackVulnerable() {
+        const readyPlanets = this.game.aiPlanets.map(planet => {
+            if (planet.population > 20) {
+                return planet;
+            }
+        });
+        const baseIdx = Math.floor(Math.random() * readyPlanets.length);
+        const targetIdx = Math.floor(Math.random() * this.potentialPreys.length);
+        const basePlanet = readyPlanets[baseIdx];
+        const targetPlanet = this.potentialPreys[targetIdx];
+        if (basePlanet && targetPlanet) {
+            basePlanet.attack(targetPlanet);
+        } else {
+            this.reinforceAlly();
         }
     }
     
     reinforceAlly() {
         console.log("reinforceAlly")
-        
+        const myStrongest = this.myStrongest();
+        const myWeakest = this.myWeakest();
+
+        console.log(myStrongest);
+        console.log(myWeakest);
+
+        if (myStrongest != myWeakest) {
+            myStrongest.attack(myWeakest);
+        } else {
+            this.doubleAttackPlayer();
+        }
     }
     
     doubleAttackPlayer() {
         console.log("doubleAttack")
-        const playerStrongest = this.playerStrongest();
-        let batch = [];
-        let sum = 0;
-        this.game.aiPlanets.forEach(planet => {
-            batch.push(planet);
-            sum += planet.population;
-            if (sum > playerStrongest.population) {
-                this.commitAttack(playerStrongest, ...batch);
-                return true;
-            }
-        });
-    }
-    
-    commitAttack(targetPlanet,basePlanet) {
-        console.log(targetPlanet);
-        console.log(basePlanet);
-        if (basePlanet && targetPlanet) {
-            basePlanet.attack(targetPlanet);
+        if (this.game.aiPlanets.length > 1) {
+
+            const playerStrongest = this.playerStrongest();
+            const myStrongest = this.myStrongest();
+            
+            const myPopulations = this.game.aiPlanets.map(planet => {
+                return planet.population;
+            }).sort().reverse();
+            
+            const mySecondStrongest = myPopulations[2];
+            
+            myStrongest.attack(playerStrongest);
+            mySecondStrongest.attack(playerStrongest);
+        
+        } else {
+            this.attackVulnerable();
         }
     }
 
@@ -178,9 +196,6 @@ export class Ai {
         this.game.playerPlanets = playerPlanets;
         this.game.spacePlanets = spacePlanets;
         this.game.aiPlanets = aiPlanets;
-        console.log(this.game.playerPlanets);
-        console.log(this.game.spacePlanets);
-        console.log(this.game.aiPlanets);
     }
 
     myStrongest() {
@@ -224,8 +239,7 @@ export class Ai {
     }
 
     rollDie() {
-        return 4;
-        return Math.floor(Math.random() * 6 + 1);
+        return Math.floor(Math.random() * 3 + 1);
     }
 
     destroy(arr, target) {
