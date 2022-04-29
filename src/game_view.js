@@ -53,7 +53,6 @@ export class GameView {
     }
     
     animate() {
-        // console.log(this.canvas);
         this.drawLogo();
         this.animation = requestAnimationFrame(this.animate.bind(this));
     }

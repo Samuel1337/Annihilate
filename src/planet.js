@@ -142,14 +142,12 @@ export class Planet {
 
     isCollidedWith(otherPlanet) {
         // checks for collision
-        console.log("collision check");
         const dx = (this.pos[0] + this.radius) - (otherPlanet.pos[0] + otherPlanet.radius);
         const dy = (this.pos[1] + this.radius) - (otherPlanet.pos[1] + otherPlanet.radius);
         const distance = Math.sqrt(dx * dx + dy * dy);
     
         if (distance < this.radius + otherPlanet.radius) {
             // collision detected!
-            console.log("Collision!");
             return true;
         } else {
             // no collision
@@ -165,7 +163,6 @@ export class Planet {
     
         if (distance < this.radius + otherPlanet.radius + 50) {
             // too close!
-            console.log("Too close!");
             return true;
         } else {
             // far enough

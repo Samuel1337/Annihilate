@@ -14,7 +14,6 @@ export class Attack {
     }
     launchAttack() {
         let that = this;
-        console.log("fire!")
         this.startPlanet.underAttack = true;
         this.launch = setInterval(() => {
                 if (this.startPlanet.population > 0) {

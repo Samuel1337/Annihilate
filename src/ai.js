@@ -77,7 +77,6 @@ export class Ai {
                 this.potentialPreys = this.destroy(this.potentialPreys, planet);
             }
         });
-        console.log(this.potentialPreys);
 
     }
     
@@ -98,7 +97,6 @@ export class Ai {
     }
     
     attackPlayer() {
-        console.log("attackPlayer")
         const playerWeakest = this.playerWeakest();
         const readyPlanets = this.game.aiPlanets.map(planet => {
             if (planet.population >= playerWeakest) {
@@ -117,7 +115,6 @@ export class Ai {
     }
     
     attackEmpty() {
-        console.log("attackEmpty")
         if (this.game.spacePlanets.length > 0) {
             const readyPlanets = this.game.aiPlanets.map(planet => {
                 if (planet.population > 20) {
@@ -137,7 +134,6 @@ export class Ai {
     }
 
     attackVulnerable() {
-        console.log("attackVulnerable")
         const baseIdx = Math.floor(Math.random() * this.game.aiPlanets.length);
         const targetIdx = Math.floor(Math.random() * this.potentialPreys.length);
         const basePlanet = this.game.aiPlanets[baseIdx];
@@ -155,7 +151,6 @@ export class Ai {
     }
     
     reinforceAlly() {
-        console.log("reinforceAlly")
         const myStrongest = this.myStrongest();
         const myWeakest = this.myWeakest();
 
@@ -167,7 +162,6 @@ export class Ai {
     }
     
     doubleAttackPlayer() {
-        console.log("doubleAttack")
         if (this.game.aiPlanets.length > 1) {
 
             const playerStrongest = this.playerStrongest();

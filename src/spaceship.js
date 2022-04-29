@@ -119,7 +119,6 @@ export class Spaceship {
     
         if (distance < this.radius + otherSpaceship.radius) {
             // collision detected!
-            console.log("collision!")
             return true;
         } else {
             // no collision

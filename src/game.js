@@ -152,14 +152,12 @@ export class Game {
 
                 if (count === 100) {
                     // tries 100 times before readjusting the number of planets
-                    console.log("red light!");
                     count = 0;
                     num--;
                 }
                 count++;
             }
         }
-        console.log("green light!");
         return this.planets;
     }
     
@@ -182,29 +180,21 @@ export class Game {
 
     handleClick() {
         window.addEventListener("mousedown",(evt) => {
-            console.log(this.clicked);
             if (this.clicked === false) {
-                // this.clicked = true;
-                console.log("click");
                 // prevents capturing more than 1 click
                 
                 if (this.mouseOnElement.every(el => { return el === "_" })) {
-                    console.log("empty space");
                     // when clicking on empty space
                     this.planets.forEach(planet => { planet.resetSelection() })
                 } else {
-                    console.log("clicked unselected planet");
-                    console.log(this.currentPlanet);
                     // when clicking on unselected planet  
 
                         if (this.selectedElements === 0) {
-                            console.log("first planet selected");
                             // when this is the first planet to be selected
                             if (this.currentPlanet.owner instanceof Player) {
                                 this.currentPlanet.addSelection("first");
                             }
                         } else {
-                            console.log("second planet selected");
                             // when this is the second planet to be selected
                             
                             this.currentPlanet.addSelection("second");
@@ -214,7 +204,6 @@ export class Game {
                         }
                 }
                 if (this.currentPlanet.selected && this.selectedElements > 1) {
-                    console.log("clicked on another planet")
                     // when clicking on another planet while this one is selected  
                     setTimeout(()=>{
                         this.planets.forEach(planet => { planet.resetSelection() })
@@ -364,7 +353,6 @@ export class Game {
         this.playerCount = pCount;
         this.aiCount = aCount;
 
-        console.log(`player: ${this.playerCount} ai: ${this.aiCount}`)
 
         if (this.playerCount === 0) {
             this.endingScreen("defeat");
@@ -396,15 +384,12 @@ export class Game {
     }
 
     endingScreen(result) {
-        console.log("the end");
         setTimeout(()=>{
             if (this.playerCount === 0 || this.aiCount === 0) {    
                 window.cancelAnimationFrame(this.animation);
                 if (result === "victory") {
-                    console.log("victory");
                     this.gameView.victoryScreen();
                 } else {
-                    console.log("defeat");
                     this.gameView.defeatScreen();
                 }
             }
