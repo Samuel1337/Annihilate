@@ -36,7 +36,7 @@ export class GameView {
         this.title.src = "./src/assets/texts/title_white.png";
 
         this.victoryText = new Image();
-        this.victoryText.src = "./src/assets/texts/victory_yellow.png";
+        this.victoryText.src = "./src/assets/texts/victory_red.png";
 
         this.defeatText = new Image();
         this.defeatText.src = "./src/assets/texts/defeat_red.png";
