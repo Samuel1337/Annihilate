@@ -167,9 +167,7 @@ export class GameView {
         this.ctx.font = 'bold 18px sans-serif';
         this.ctx.textAlign = "center";
         this.ctx.fillText(`Level ${this.level}`, this.canvasCenter[0]-20, this.canvasCenter[0]-10);
-        setTimeout(()=>{
-            this.start();
-        },3000);
+        this.start();
     }
 
     victoryScreen() {
