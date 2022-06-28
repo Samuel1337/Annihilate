@@ -49,6 +49,9 @@ export class Game {
         this.musicIcon = new Image();
         this.musicIcon.src = "./src/assets/icon/music.png";
 
+        // sets up clock for smooth game pace
+        this.clock = setInterval(()=>this.checkGrowth(), 1000);
+        this.planetsGrowth = [];
 
         // plays the game
         this.handleClick();
@@ -75,6 +78,19 @@ export class Game {
         this.drawMusicIcon();
         this.checkForVictory();
         this.animation = window.requestAnimationFrame(this.animate.bind(this));
+    }
+
+    checkGrowth() {
+        this.planets.forEach((planet, i) => {
+            if (planet.population === this.planetsGrowth[i]) {
+                console.log(this.planetsGrowth, planet.population, i)
+                planet.underAttack = false;
+            }
+        })
+        this.planetsGrowth = [];
+        this.planets.forEach(planet => {
+            this.planetsGrowth.push(planet.population);
+        })
     }
 
     moveStarsBack() {

@@ -163,7 +163,7 @@ export class Ai {
     
     doubleAttackPlayer() {
         if (this.game.aiPlanets.length > 1) {
-
+            
             const playerStrongest = this.playerStrongest();
             const myStrongest = this.myStrongest();
             
@@ -171,11 +171,19 @@ export class Ai {
                 return planet.population;
             }).sort().reverse();
             
-            const mySecondStrongest = myPopulations[2];
+            let mySecondStrongest = myPopulations[2];
             
+            if (mySecondStrongest) {
+                this.game.aiPlanets.forEach(planet => {
+                    if (planet.population === mySecondStrongest) {
+                        mySecondStrongest = planet;
+                    }
+                })
+                mySecondStrongest.attack(playerStrongest);
+            }
+
             myStrongest.attack(playerStrongest);
-            mySecondStrongest.attack(playerStrongest);
-        
+            
         } else {
             this.attackVulnerable();
         }
