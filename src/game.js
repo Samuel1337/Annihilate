@@ -50,7 +50,7 @@ export class Game {
         this.musicIcon.src = "./src/assets/icon/music.png";
 
         // sets up clock for smooth game pace
-        this.clock = setInterval(()=>this.checkGrowth(), 1000);
+        // this.clock = setInterval(()=>this.checkGrowth(), 1000);
         this.planetsGrowth = [];
 
         // plays the game
