@@ -405,8 +405,10 @@ export class Game {
                 window.cancelAnimationFrame(this.animation);
                 if (result === "victory") {
                     this.gameView.victoryScreen();
+                    this.drawMusicIcon();
                 } else {
                     this.gameView.defeatScreen();
+                    this.drawMusicIcon();
                 }
             }
         }, 5000);

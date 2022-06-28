@@ -85,7 +85,7 @@ export class Spaceship {
             } else {
                 this.endPlanet.population -= 1;
                 this.endPlanet.incomingAttackers -= 1;
-                if (this.endPlanet.population === 0) { // the solution to the 3 days old bug, rest in fucking peace
+                if (this.endPlanet.population === 0 && this.endPlanet.owner === this.startPlanet.owner) { // the solution to the 2 months old bug, rest in fucking peace
                     this.endPlanet.incomingAttackers = 0;
                 }
                 this.endPlanet.processAttack();
@@ -106,7 +106,10 @@ export class Spaceship {
         this.endPlanet.color = this.owner.color;
         this.endPlanet.cap = this.owner.cap;
         this.endPlanet.rate = this.owner.rate;
-        this.endPlanet.underAttack = false;
+        if (this.endPlanet.incomingAttackers === 0) {
+            this.endPlanet.underAttack = false;
+            console.log("conquer, underAttack: ", this.endPlanet.underAttack)
+        }
 
         
     }
