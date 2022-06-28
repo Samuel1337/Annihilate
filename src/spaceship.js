@@ -108,7 +108,6 @@ export class Spaceship {
         this.endPlanet.rate = this.owner.rate;
         if (this.endPlanet.incomingAttackers === 0) {
             this.endPlanet.underAttack = false;
-            console.log("conquer, underAttack: ", this.endPlanet.underAttack)
         }
 
         

@@ -15,7 +15,6 @@ export class Attack {
     launchAttack() {
         let that = this;
         this.startPlanet.underAttack = true;
-        if (this.startPlanet.owner.cap === 20) { console.log("launchAttack1, underAttack: ", this.underAttack) }
         this.launch = setInterval(() => {
                 if (this.startPlanet.population > 0) {
                     this.startPlanet.population -= 1;
@@ -27,7 +26,6 @@ export class Attack {
 
                 if (this.numOfSpaceships <= 0) {
                     this.startPlanet.underAttack = false;
-                    if (this.startPlanet.owner.cap === 20) { console.log("launchAttack2, underAttack: ", this.underAttack) }
                     this.startPlanet.attackBatch = null;
                     clearInterval(this.launch);
                 } else if (this.startPlanet.population <= 0) {

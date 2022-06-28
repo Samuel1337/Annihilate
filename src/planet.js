@@ -21,7 +21,6 @@ export class Planet {
         // arbitrary planet settings
         this.center = [this.pos[0]+this.radius, this.pos[1]+this.radius]; 
         this.underAttack = false;
-        if (this.owner.cap === 20) { console.log("constructor, underAttack: ", this.underAttack) }
         this.planetSpeed = 5;
 
         // core gameplay settings
@@ -214,12 +213,10 @@ export class Planet {
         clearTimeout(this.wait);
         if (this.underAttack === false) {
             this.underAttack = true;
-            if (this.owner.cap === 20) { console.log("processAttack1, underAttack: ", this.underAttack) }
         }
         if (this.incomingAttackers <= 1) {
             this.wait = setTimeout(()=>{
                 this.underAttack = false;
-                console.log("processAttack2, underAttack: ", this.underAttack) 
                 this.incomingAttackers = 0;
                 new Heal(this.pos, this.game, this);
             }, 800)
