@@ -71,6 +71,7 @@ export class Planet {
         // adds event listener that highlights the planet (hover, click)
         if (this.selected) {
             this.highlight();
+            this.drawOverlay(ctx);
         }
 
         // draws planet
@@ -79,6 +80,8 @@ export class Planet {
         // }
         this.drawImage(ctx);
         
+        this.drawOverlay(ctx);
+
         // draws the number of fighters on the planet
         this.drawPopulation(ctx);   
     }
@@ -107,6 +110,21 @@ export class Planet {
         ctx.closePath();
         ctx.fill();    
         ctx.shadowBlur = 0;
+    }
+    
+    drawOverlay(ctx) {
+        // sets up colored hue
+        if (this.color === 'aqua') {
+            ctx.fillStyle = "rgba(0,255,255,0.2)";
+        } else if (this.color === 'red') {
+            ctx.fillStyle = "rgba(255,0,0,0.2)";
+        } else {
+            ctx.fillStyle = "rgba(80,80,80,0.2)";
+        }
+        ctx.beginPath();
+        ctx.arc(...this.center,this.radius+2,0,2*Math.PI);
+        ctx.closePath();
+        ctx.fill();    
     }
     
     drawImage(ctx) {
@@ -241,6 +259,18 @@ export class Planet {
     }
 
     highlight() {
+        this.ctx.fillStyle = "white";
+        this.ctx.beginPath();
+        this.ctx.arc(...this.center,this.radius+13,0,2*Math.PI);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        this.ctx.fillStyle = "black";
+        this.ctx.beginPath();
+        this.ctx.arc(...this.center,this.radius+10,0,2*Math.PI);
+        this.ctx.closePath();
+        this.ctx.fill();
+
         this.ctx.fillStyle = this.defaultColor;
         this.ctx.beginPath();
         this.ctx.arc(...this.center,this.radius+5,0,2*Math.PI);
