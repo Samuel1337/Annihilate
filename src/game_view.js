@@ -13,7 +13,7 @@ export class GameView {
         this.frameY = 0;
 
         this.level = 1;
-        this.difficulty = 0.5;
+        this.difficulty = 1;
 
         this.mainMenu = true;
 
@@ -49,7 +49,7 @@ export class GameView {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         cancelAnimationFrame(this.animation);
         this.backgroundMusic1.play();
-        this.game = new Game(this, this.canvas, this.ctx, 1, this.increaseDifficulty());
+        this.game = new Game(this, this.canvas, this.ctx, 9, this.increaseDifficulty());
     }
     
     animate() {

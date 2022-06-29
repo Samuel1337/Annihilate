@@ -45,7 +45,7 @@ export class Spaceship {
             if (!this.arrived()) {
                 // moves spaceship
                 this.updatePos();
-            this.draw(ctx);
+                this.draw(ctx);
             } else {
                 this.hitPlanet();
             }
@@ -56,7 +56,7 @@ export class Spaceship {
 
         // draws spaceship
         ctx.drawImage(this.image,   0, 0,   1080, 1080, ...this.pos, this.radius*2, this.radius*2);
-        //                |  src_img  | src_dim | src_size |   ctx_pos   |           ctx_dim          |
+        //           |  src_img  | src_dim | src_size |   ctx_pos   |           ctx_dim          |
     }
         
     updatePos() {
@@ -79,24 +79,24 @@ export class Spaceship {
     }
     
     hitPlanet() {
-        if (this.endPlanet.population > 0) {
-            if (this.endPlanet.owner === this.owner) {
-                this.endPlanet.population += 1;
-            } else {
-                this.endPlanet.population -= 1;
-                this.endPlanet.incomingAttackers -= 1;
-                if (this.endPlanet.population === 0 && this.endPlanet.owner === this.startPlanet.owner) { // the solution to the 2 months old bug, rest in fucking peace
-                    this.endPlanet.incomingAttackers = 0;
-                }
-                this.endPlanet.processAttack();
-                new Explosion(this.pos, this.game);
-            }
-        } else {
+        if (this.endPlanet.owner === this.owner) {
+            this.endPlanet.population += 1;
             this.endPlanet.incomingAttackers -= 1;
-            this.endPlanet.processAttack(); // true makes .conquer override .processAttack
-            this.conquer();
+            this.endPlanet.processAttack();
+        } else {
+            if (this.endPlanet.population > 0) {
+                this.endPlanet.population -= 1;
+            }
+            this.endPlanet.incomingAttackers -= 1;
+            
             new Explosion(this.pos, this.game);
+            this.endPlanet.processAttack();
+            
+            if (this.endPlanet.population <= 0) {
+                this.conquer();
+            }
         }
+        console.log(this.endPlanet.incomingAttackers)
         this.alive = false;
     }
 
@@ -106,7 +106,9 @@ export class Spaceship {
         this.endPlanet.color = this.owner.color;
         this.endPlanet.cap = this.owner.cap;
         this.endPlanet.rate = this.owner.rate;
-        if (this.endPlanet.incomingAttackers === 0) {
+        this.attackBatch = null;
+        if (this.endPlanet.incomingAttackers <= 1) {
+            console.log("@")
             this.endPlanet.underAttack = false;
         }
 
