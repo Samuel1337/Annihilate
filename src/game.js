@@ -56,6 +56,7 @@ export class Game {
         // plays the game
         this.handleClick();
         window.requestAnimationFrame(this.animate.bind(this));
+        this.gameOver = false;
     }
     
     animate() {
@@ -401,14 +402,19 @@ export class Game {
 
     endingScreen(result) {
         setTimeout(()=>{
+            this.gameOver = true;
             if (this.playerCount === 0 || this.aiCount === 0) {    
                 window.cancelAnimationFrame(this.animation);
                 if (result === "victory") {
-                    this.gameView.victoryScreen();
-                    this.drawMusicIcon();
+                    if (this.gameView) {
+                        this.gameView.victoryScreen();
+                        this.drawMusicIcon();
+                    }
                 } else {
-                    this.gameView.defeatScreen();
-                    this.drawMusicIcon();
+                    if (this.gameView) {
+                        this.gameView.defeatScreen();
+                        this.drawMusicIcon();
+                    }
                 }
             }
         }, 5000);
@@ -429,5 +435,12 @@ export class Game {
         this.stop = function(){
             this.soundFx.pause();
         }
+    }
+
+    destroyGame() {
+        cancelAnimationFrame(this.animation);
+        this.battleSound.stop();
+        this.gameView.game = null;
+        this.gameView = null;
     }
 }

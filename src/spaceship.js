@@ -96,7 +96,6 @@ export class Spaceship {
                 this.conquer();
             }
         }
-        console.log(this.endPlanet.incomingAttackers)
         this.alive = false;
     }
 
@@ -108,11 +107,8 @@ export class Spaceship {
         this.endPlanet.rate = this.owner.rate;
         this.attackBatch = null;
         if (this.endPlanet.incomingAttackers <= 1) {
-            console.log("@")
             this.endPlanet.underAttack = false;
         }
-
-        
     }
 
     isCollidedWith(otherSpaceship) {

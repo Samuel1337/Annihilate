@@ -12,10 +12,12 @@ export class GameView {
         this.frameX = 0;
         this.frameY = 0;
 
-        this.level = 1;
-        this.difficulty = 1;
+        this.level = 0;
+        this.difficulty = 0.5;
 
+        this.game = null;
         this.mainMenu = true;
+        this.levelScreen = false;
 
         this.canvasCenter = [this.canvas.width/2, this.canvas.height/2];
 
@@ -48,12 +50,15 @@ export class GameView {
     start() {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         cancelAnimationFrame(this.animation);
+        this.levelScreen = false;
         this.backgroundMusic1.play();
         this.game = new Game(this, this.canvas, this.ctx, 9, this.increaseDifficulty());
     }
     
     animate() {
-        this.drawLogo();
+        if (this.mainMenu) {
+            this.drawLogo();
+        }
         this.animation = requestAnimationFrame(this.animate.bind(this));
     }
 
@@ -76,7 +81,7 @@ export class GameView {
     }
 
     drawLogo() {
-        this.makeBlackBacground();
+        this.makeBlackBackground();
 
         this.ctx.shadowColor = "red";
         this.ctx.shadowBlur = 50;
@@ -138,7 +143,7 @@ export class GameView {
             } else {
                 // mouse over! Start Game
                 return true;
-            }  
+            }
     }
 
     sound(src) {
@@ -162,17 +167,44 @@ export class GameView {
     }
 
     nextLevel() {
-        this.makeBlackBacground();
+        this.level += 1;
+        this.makeBlackBackground();
         this.ctx.fillStyle = "white";
         this.ctx.font = 'bold 18px sans-serif';
         this.ctx.textAlign = "center";
-        this.ctx.fillText(`Level ${this.level}`, this.canvasCenter[0]-20, this.canvasCenter[0]-10);
-        this.start();
+        this.ctx.fillText(`Level ${this.level}`, this.canvas.width/2, this.canvas.height/2);
+        this.mainMenu = false;
+        this.levelScreen = true;
+        setTimeout(()=>{
+            console.log(this.game) 
+            if (this.game === null) {
+                this.start();
+            }
+        }, 2000)
+    }
+
+    returnToGameView() {
+        if (this.game && this.game.gameOver) {
+            this.game.destroyGame();
+            this.nextLevel();
+        }
+    }
+
+    returnToTheBeginning() {
+        if (this.game && this.game.gameOver) {
+            this.level = 0;
+            this.difficulty = 0.5;
+            this.game.destroyGame();
+            this.mainMenu = true;
+            this.waitForClickPLay();
+            this.animate();
+        }
     }
 
     victoryScreen() {
-        this.ctx.drawImage(
-            // source image
+        if (this.game) {
+            this.ctx.drawImage(
+                // source image
             this.victoryImage,
             // source position
             0, 0,
@@ -182,11 +214,11 @@ export class GameView {
             0,0,
             // ctx dimension
             this.canvas.width, this.canvas.height);
+            
+            this.ctx.shadowColor = "white";
+            this.ctx.shadowBlur = 15;
 
-        this.ctx.shadowColor = "white";
-        this.ctx.shadowBlur = 15;
-
-        this.ctx.drawImage(
+            this.ctx.drawImage(
             // source image
             this.victoryText,
             // source position
@@ -197,13 +229,16 @@ export class GameView {
             (this.canvas.width/2) - (813/2), (this.canvas.height/2) - (254/2),
             // ctx dimension
             813, 254);
-
-        // setTimeout(()=>{
-        //     this.nextLevel();
-        // }, 3000)
+        }
+            
+        setTimeout(()=>{
+            this.returnToGameView();
+            return null;
+        }, 3000)
     }
 
     defeatScreen() {
+        if (this.game) {
         this.ctx.drawImage(
             // source image
             this.defeatImage,
@@ -230,9 +265,15 @@ export class GameView {
             (this.canvas.width/2) - (813/2), (this.canvas.height/2) - (254/2),
             // ctx dimension
             813, 254);
+        }
+
+        setTimeout(()=>{
+            this.returnToTheBeginning();
+            return null;
+        }, 3000)
     }
 
-    makeBlackBacground() {
+    makeBlackBackground() {
         this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

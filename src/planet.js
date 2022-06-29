@@ -216,9 +216,7 @@ export class Planet {
         }
 
         if (this.incomingAttackers <= 1) {
-            console.log(this.incomingAttackers)
             this.wait = setTimeout(()=>{
-                console.log("!")
                 this.underAttack = false;
                 this.incomingAttackers = 0;
                 new Heal(this.pos, this.game, this);
