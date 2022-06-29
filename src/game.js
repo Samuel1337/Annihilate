@@ -84,7 +84,6 @@ export class Game {
     checkGrowth() {
         this.planets.forEach((planet, i) => {
             if (planet.population === this.planetsGrowth[i]) {
-                console.log(this.planetsGrowth, planet.population, i)
                 planet.underAttack = false;
             }
         })
@@ -232,11 +231,15 @@ export class Game {
             if (this.mouseOnMusicIcon(evt)) {
                 if (this.mute) {
                     this.mute = false;
-                    this.gameView.backgroundMusic1.play();
+                    if (this.gameView) {
+                        this.gameView.backgroundMusic1.play();
+                    }
                 } else {
                     this.mute = true;
                     this.battleSound.stop();
-                    this.gameView.backgroundMusic1.stop();
+                    if (this.gameView) {
+                        this.gameView.backgroundMusic1.stop();
+                    }
                 }
             }
         });

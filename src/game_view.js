@@ -176,7 +176,6 @@ export class GameView {
         this.mainMenu = false;
         this.levelScreen = true;
         setTimeout(()=>{
-            console.log(this.game) 
             if (this.game === null) {
                 this.start();
             }
