@@ -159,6 +159,10 @@ export class GameView {
         this.stop = function(){
             this.sound.pause();
         }
+        this.reset = function(){
+            this.sound.pause();
+            this.sound.currentTime = 0;
+        }
     }
 
     increaseDifficulty() {
@@ -194,6 +198,9 @@ export class GameView {
             this.level = 0;
             this.difficulty = 0.5;
             this.game.destroyGame();
+            this.backgroundMusic0.reset();
+            this.backgroundMusic1.reset();
+            this.backgroundMusic2.reset();
             this.mainMenu = true;
             this.waitForClickPLay();
             this.animate();

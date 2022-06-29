@@ -29,3 +29,28 @@ canvas {
   border-radius: 10px;
   border: 1px solid rgb(220, 167, 20);
 }
+
+div {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 90%;
+  transition: 1s;
+}
+div .instructions {
+  padding: 0.5em;
+  color: rgb(220, 167, 20);
+  font-weight: 700;
+}
+div .reveal {
+  color: rgb(25, 25, 25);
+}
+
+.instructions:hover {
+  cursor: default;
+  background-color: rgb(220, 167, 20);
+  color: rgb(25, 25, 25);
+}
+
+.instructions:hover + .reveal {
+  transition: 1s;
+  color: rgb(220, 167, 20);
+}
