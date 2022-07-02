@@ -18,8 +18,7 @@ export class Heal {
         this.slowdown = 0;
 
         // creates image
-        this.image = new Image();
-        this.image.src = `./src/assets/heal_efffect/heal.png`;
+        this.image = this.game.gameView.imageIndex.heal;
 
         // sends this instance to be animated by Game class
         this.game.heals.push(this);

@@ -1,4 +1,5 @@
 import { Game } from "./game";
+import { ImageIndex } from "./images";
 
 export class GameView {
     constructor(canvas, ctx) {
@@ -9,6 +10,10 @@ export class GameView {
         this.backgroundMusic1 = new this.sound("./src/assets/music/background1.mp3");
         this.backgroundMusic2 = new this.sound("./src/assets/music/background2.mp3");
         
+        this.imageSrcs = ['YouTube.png', 'bullet.png', 'paper.jpg', 'SpaceShip.png', 'url.png'];
+        this.images = [youtube, bullet, background, spaceship, url];
+        this.loadCount = 0; // keep a count of images that have loaded so far
+
         this.frameX = 0;
         this.frameY = 0;
 
@@ -21,32 +26,22 @@ export class GameView {
 
         this.canvasCenter = [this.canvas.width/2, this.canvas.height/2];
 
-        this.image = new Image();
-        this.image.src = "./src/assets/black_hole/intro_planet.png";
         this.slowdown = 0;
 
-        this.play = new Image();
-        this.play.src = "./src/assets/texts/play.png";
+        this.imageIndex = new ImageIndex();
 
-        this.victoryImage = new Image();
-        this.victoryImage.src = "./src/assets/screens/victory.jpg";
-
-        this.defeatImage = new Image();
-        this.defeatImage.src = "./src/assets/screens/defeat.jpeg";
-
-        this.title = new Image();
-        this.title.src = "./src/assets/texts/title_white.png";
-
-        this.victoryText = new Image();
-        this.victoryText.src = "./src/assets/texts/victory_red.png";
-
-        this.defeatText = new Image();
-        this.defeatText.src = "./src/assets/texts/defeat_red.png";
-        
+        this.image = this.imageIndex.image;
+        this.play = this.imageIndex.play;
+        this.victoryImage = this.imageIndex.victoryImage;
+        this.defeatImage = this.imageIndex.defeatImage;
+        this.title = this.imageIndex.title;
+        this.victoryText = this.imageIndex.victoryText;
+        this.defeatText = this.imageIndex.defeatText;
+    
         this.waitForClickPLay();
         this.animate();
     }
-    
+
     start() {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         cancelAnimationFrame(this.animation);

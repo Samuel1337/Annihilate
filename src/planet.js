@@ -33,8 +33,7 @@ export class Planet {
         const imgIdx = Math.floor(Math.random() * (12));
         
         // creates planet image instance
-        this.image = new Image();
-        this.image.src = `./src/assets/planets/planet_${imgIdx}.png`;
+        this.image = this.game.gameView.ImageIndex.planet[imgIdx];
         this.frameIdx = 0;
         this.slowdownFrame = 0;
 

@@ -27,13 +27,12 @@ export class Spaceship {
         const endY = this.endPos[1] + this.startPlanet.radius - this.radius;
         this.endPos = [endX, endY];
 
-
         // loads sprite
-        this.image = new Image();
+        this.image;
         if (owner.color === "red") {
-            this.image.src = "./src/assets/spaceships/red_jet.png";
+            this.image = this.startPlanet.game.gameView.imageIndex.redJet;
         } else {
-            this.image.src = "./src/assets/spaceships/blue_jet.png";
+            this.image = this.startPlanet.game.gameView.imageIndex.blueJet;
         }
 
         // add spaceship to array of spaceships to be animated

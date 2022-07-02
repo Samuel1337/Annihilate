@@ -195,57 +195,61 @@ export class Game {
     }
 
     handleClick() {
-        window.addEventListener("mousedown",(evt) => {
-            if (this.clicked === false) {
-                // prevents capturing more than 1 click
-                
-                if (this.mouseOnElement.every(el => { return el === "_" })) {
-                    // when clicking on empty space
-                    this.planets.forEach(planet => { planet.resetSelection() })
-                } else {
-                    // when clicking on unselected planet  
+        window.addEventListener("mousedown",(evt) => this.mouseDown(evt));
+        window.addEventListener("mouseup",(evt) => this.mouseUp(evt));
+    }
 
-                        if (this.selectedElements === 0) {
-                            // when this is the first planet to be selected
-                            if (this.currentPlanet.owner instanceof Player) {
-                                this.currentPlanet.addSelection("first");
-                            }
-                        } else {
-                            // when this is the second planet to be selected
-                            
-                            this.currentPlanet.addSelection("second");
-                            setTimeout(()=>{
-                                this.currentPlanet.resetSelection();
-                            },500);
+    mouseDown(evt) {
+        if (this.clicked === false) {
+            // prevents capturing more than 1 click
+            
+            if (this.mouseOnElement.every(el => { return el === "_" })) {
+                // when clicking on empty space
+                this.planets.forEach(planet => { planet.resetSelection() })
+            } else {
+                // when clicking on unselected planet  
+
+                    if (this.selectedElements === 0) {
+                        // when this is the first planet to be selected
+                        if (this.currentPlanet.owner instanceof Player) {
+                            this.currentPlanet.addSelection("first");
                         }
-                }
-                if (this.currentPlanet.selected && this.selectedElements > 1) {
-                    // when clicking on another planet while this one is selected  
-                    setTimeout(()=>{
-                        this.planets.forEach(planet => { planet.resetSelection() })
-                        this.currentPlanet.resetSelection();
-                    },500);
-                }
-                this.clicked = true; // prevents capturing more than 1 click
-            }
-            if (this.mouseOnMusicIcon(evt)) {
-                if (this.mute) {
-                    this.mute = false;
-                    if (this.gameView) {
-                        this.gameView.backgroundMusic1.play();
+                    } else {
+                        // when this is the second planet to be selected
+                        
+                        this.currentPlanet.addSelection("second");
+                        setTimeout(()=>{
+                            this.currentPlanet.resetSelection();
+                        },500);
                     }
-                } else {
-                    this.mute = true;
-                    this.battleSound.stop();
-                    if (this.gameView) {
-                        this.gameView.backgroundMusic1.stop();
-                    }
+            }
+            if (this.currentPlanet.selected && this.selectedElements > 1) {
+                // when clicking on another planet while this one is selected  
+                setTimeout(()=>{
+                    this.planets.forEach(planet => { planet.resetSelection() })
+                    this.currentPlanet.resetSelection();
+                },500);
+            }
+            this.clicked = true; // prevents capturing more than 1 click
+        }
+        if (this.mouseOnMusicIcon(evt)) {
+            if (this.mute) {
+                this.mute = false;
+                if (this.gameView) {
+                    this.gameView.backgroundMusic1.play();
+                }
+            } else {
+                this.mute = true;
+                this.battleSound.stop();
+                if (this.gameView) {
+                    this.gameView.backgroundMusic1.stop();
                 }
             }
-        });
-        window.addEventListener("mouseup",(evt) => {
-            this.clicked = false; // allows planet to be clicked on again
-        });
+        }
+    }
+
+    mouseUp(evt) {
+        this.clicked = false; // allows planet to be clicked on again
     }
 
     getPlanet() {
@@ -442,6 +446,8 @@ export class Game {
 
     destroyGame() {
         cancelAnimationFrame(this.animation);
+        window.removeEventListener("mousedown",(evt) => this.mouseDown(evt));
+        window.removeEventListener("mouseup",(evt) => this.mouseUp(evt));
         this.battleSound.stop();
         this.gameView.game = null;
         this.gameView = null;

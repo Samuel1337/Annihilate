@@ -12,8 +12,7 @@ export class Explosion {
 
         this.frameIdx = 0;
 
-        this.image = new Image();
-        this.image.src = `./src/assets/blue_explosion/img_${this.frameIdx}.png`;
+        this.image = this.game.gameView.explosion[this.frameIdx];
 
         this.game.explosions.push(this);
         this.game.battle = true;
@@ -29,7 +28,7 @@ export class Explosion {
     }
     
     step(ctx) {
-        this.image.src = `./src/assets/blue_explosion/img_${this.frameIdx}.png`;
+        this.image = this.game.gameView.explosion[this.frameIdx];
         ctx.drawImage(this.image, 0, 0, 400, 400, ...this.center, 100, 100);
         this.frame();
     }
