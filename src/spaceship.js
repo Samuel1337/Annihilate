@@ -1,5 +1,4 @@
 import { Explosion } from "./explosion";
-import { Heal } from "./heal";
 
 export class Spaceship {
     constructor(startPlanet, endPlanet, owner, velocity, attackBatch) {
