@@ -11,6 +11,9 @@ export class ImageIndex {
         this.heal = new Image();                this.heal.src = "./src/assets/heal_efffect/heal.png";
         this.redJet = new Image();              this.redJet.src = "./src/assets/spaceships/red_jet.png";
         this.blueJet = new Image();             this.blueJet.src = "./src/assets/spaceships/blue_jet.png";
+        this.background = new Image();          this.background.src = `./src/assets/SpaceBg/Backgrounds/Blue1.png`;
+        this.stars = new Image();               this.stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
+        this.musicIcon = new Image();           this.musicIcon.src = "./src/assets/icon/music.png";
 
         this.planet = [];
         this.makePlanets();

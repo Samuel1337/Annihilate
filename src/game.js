@@ -46,8 +46,10 @@ export class Game {
         this.battleSound = new this.sound("./src/assets/music/battle.mp3");
         this.battle = false;
         this.mute = false;
-        this.musicIcon = new Image();
-        this.musicIcon.src = "./src/assets/icon/music.png";
+
+        this.musicIcon = this.gameView.imageIndex.musicIcon;
+        this.backgroundFrame = this.gameView.imageIndex.background;
+        this.stars = this.gameView.imageIndex.stars;
 
         // sets up clock for smooth game pace
         // this.clock = setInterval(()=>this.checkGrowth(), 1000);
@@ -119,19 +121,19 @@ export class Game {
         stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
         
         // draws background image
-        ctx.drawImage(background, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.backgroundFrame, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, this.moveStarsBack(), 0, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.stars, this.moveStarsBack(), 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, this.moveStarsBack()+960, 0, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.stars, this.moveStarsBack()+960, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, this.moveStarsFront(), 50, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.stars, this.moveStarsFront(), 50, 960, 540, 0, 0, canvas.width, canvas.height);
         
         // draws stars image
-        ctx.drawImage(stars, this.moveStarsFront()+960, 50, 960, 540, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this.stars, this.moveStarsFront()+960, 50, 960, 540, 0, 0, canvas.width, canvas.height);
     }
     
     setUpPlanets(num) {
@@ -427,7 +429,7 @@ export class Game {
         }, 5000);
     }
     
-    sound(src) {
+     sound(src) {
         this.soundFx = document.createElement("audio");
         this.soundFx.src = src;
         this.soundFx.setAttribute("preload", "auto");

@@ -9,10 +9,6 @@ export class GameView {
         this.backgroundMusic0 = new this.sound("./src/assets/music/background0.mp3");
         this.backgroundMusic1 = new this.sound("./src/assets/music/background1.mp3");
         this.backgroundMusic2 = new this.sound("./src/assets/music/background2.mp3");
-        
-        this.imageSrcs = ['YouTube.png', 'bullet.png', 'paper.jpg', 'SpaceShip.png', 'url.png'];
-        this.images = [youtube, bullet, background, spaceship, url];
-        this.loadCount = 0; // keep a count of images that have loaded so far
 
         this.frameX = 0;
         this.frameY = 0;
