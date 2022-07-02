@@ -50,3 +50,27 @@ div {
   transition: 1s;
   color:rgb(220, 167, 20);
 }
+
+.header {
+  display: flex;
+}
+
+.dev-info{
+  display: flex;
+  float: left;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dev-links{
+  margin-inline: .5em;
+  font-size: 24px;
+  text-decoration: none;
+  color: white;
+  transition: all 300ms;
+  &:hover{
+      color: #75E6DA;
+      transform: scale(1.02) translate(0px, 8px);
+  }
+}
