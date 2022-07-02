@@ -10,11 +10,15 @@ export class Attack {
         this.numOfSpaceships = startPlanet.population;
         this.spaceships = [];
         this.velocity = this.getVelocity();
+        this.attackOn = true;
         this.launchAttack();
     }
     launchAttack() {
         let that = this;
         this.startPlanet.underAttack = true;
+        // while (this.attackOn) {
+        //     this.attackCycle();
+        // }
         this.launch = setInterval(() => {
                 if (this.startPlanet.population > 0) {
                     this.startPlanet.population -= 1;
@@ -34,6 +38,34 @@ export class Attack {
         }, 350); // spacing between spaceships
         
     }
+
+    // attackCycle() {
+    //     let that = this;
+    //     let count = 0;
+    //     while (this.attackOn) {
+    //         count += 1;
+    //         if (count > 10000) {
+    //             count = 0;
+    //             if (this.startPlanet.population > 0) {
+    //                 this.startPlanet.population -= 1;
+    //                 this.numOfSpaceships -= 1;
+    //             }
+                
+    //             new Spaceship(this.startPlanet, this.endPlanet, this.owner, that.getVelocity(), this);
+    //             this.endPlanet.incomingAttackers += 1;
+
+    //             if (this.numOfSpaceships <= 0) {
+    //                 this.startPlanet.underAttack = false;
+    //                 this.startPlanet.attackBatch = null;
+    //                 this.attackOn = false;
+    //                 return null;
+    //             } else if (this.startPlanet.population <= 0) {
+    //                 this.attackOn = false;
+    //                 return null;
+    //             }
+    //         }
+    //     }
+    // }
 
     getVelocity() {
         // finds the angle
