@@ -1,14 +1,20 @@
 import { Game } from "./game";
 import { ImageIndex } from "./images";
+import { SoundIndex } from "./sounds";
 
 export class GameView {
     constructor(canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
         
-        this.backgroundMusic0 = new this.sound("./src/assets/music/background0.mp3");
-        this.backgroundMusic1 = new this.sound("./src/assets/music/background1.mp3");
-        this.backgroundMusic2 = new this.sound("./src/assets/music/background2.mp3");
+        this.imageIndex = new ImageIndex();
+        this.soundIndex = new SoundIndex();
+
+        this.backgroundMusic0 = this.soundIndex.backgroundMusic0;
+        this.backgroundMusic1 = this.soundIndex.backgroundMusic1;
+        this.backgroundMusic2 = this.soundIndex.backgroundMusic2;
+
+        this.soundOn = true;
 
         this.frameX = 0;
         this.frameY = 0;
@@ -24,7 +30,6 @@ export class GameView {
 
         this.slowdown = 0;
 
-        this.imageIndex = new ImageIndex();
 
         this.image = this.imageIndex.image;
         this.play = this.imageIndex.play;
@@ -42,7 +47,9 @@ export class GameView {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         cancelAnimationFrame(this.animation);
         this.levelScreen = false;
-        this.backgroundMusic1.play();
+        if (this.soundOn) {
+            this.backgroundMusic1.play();
+        }
         this.game = new Game(this, this.canvas, this.ctx, 9, this.increaseDifficulty());
     }
     
@@ -135,25 +142,6 @@ export class GameView {
                 // mouse over! Start Game
                 return true;
             }
-    }
-
-    sound(src) {
-        this.sound = document.createElement("audio");
-        this.sound.src = src;
-        this.sound.setAttribute("preload", "auto");
-        this.sound.setAttribute("controls", "none");
-        this.sound.style.display = "none";
-        document.body.appendChild(this.sound);
-        this.play = function(){
-            this.sound.play();
-        }
-        this.stop = function(){
-            this.sound.pause();
-        }
-        this.reset = function(){
-            this.sound.pause();
-            this.sound.currentTime = 0;
-        }
     }
 
     increaseDifficulty() {

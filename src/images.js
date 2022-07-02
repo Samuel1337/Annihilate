@@ -24,17 +24,17 @@ export class ImageIndex {
 
     makePlanets() {
         for (let i = 0; i < 12; i++) {       
-            this.planetType = new Image();
-            this.planetType.src = `./src/assets/texts/planet_${i}.png`;
-            this.planet.push(this.planetType);
+            let planetType = new Image();
+            planetType.src = `./src/assets/planets/planet_${i}.png`;
+            this.planet.push(planetType);
         }
     }
     
     makeExplosion() {
         for (let i = 0; i < 30; i++) {
-            this.explosionFrame = new Image();
-            this.explosionFrame.src = `./src/assets/blue_explosion/img_${i}.png`;
-            this.explosion.push(this.explosionFrame);
+            let explosionFrame = new Image();
+            explosionFrame.src = `./src/assets/blue_explosion/img_${i}.png`;
+            this.explosion.push(explosionFrame);
         }
     }
 }

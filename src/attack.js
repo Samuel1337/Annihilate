@@ -34,6 +34,7 @@ export class Attack {
         }, 350); // spacing between spaceships
         
     }
+
     getVelocity() {
         // finds the angle
         const dx = this.endPos[0] - this.startPos[0];

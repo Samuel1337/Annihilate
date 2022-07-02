@@ -43,7 +43,7 @@ export class Game {
         // [ "_", "_", "2", "_" ] <= means that mouse is on planet 2
         // [ "0", "_", "_", "_" ] <= means that mouse is on planet 0
         
-        this.battleSound = new this.sound("./src/assets/music/battle.mp3");
+        this.battleSound = this.gameView.soundIndex.battleSound;
         this.battle = false;
         this.mute = false;
 
@@ -112,14 +112,7 @@ export class Game {
     }
 
     background(canvas, ctx) {
-        // creates background image
-        let background = new Image();
-        background.src = `./src/assets/SpaceBg/Backgrounds/Blue1.png`;
-        
-        // creates stars image
-        let stars = new Image();
-        stars.src = `./src/assets/SpaceBg/Backgrounds/BlueStars.png`;
-        
+
         // draws background image
         ctx.drawImage(this.backgroundFrame, 0, 0, 960, 540, 0, 0, canvas.width, canvas.height);
         
@@ -196,9 +189,17 @@ export class Game {
         return ready;
     }
 
+    isMouseOn() {
+        document.addEventListener("pointermove", (evt) => this.checkForMouseOnPlanets(evt));
+    }
+
+    checkForMouseOnPlanets(evt) {
+        this.planets.forEach(planet => planet.pointerMove(evt));
+    }
+
     handleClick() {
-        window.addEventListener("mousedown",(evt) => this.mouseDown(evt));
-        window.addEventListener("mouseup",(evt) => this.mouseUp(evt));
+        document.addEventListener("mousedown", (evt) => this.mouseDown(evt));
+        document.addEventListener("mouseup", (evt) => this.mouseUp(evt));
     }
 
     mouseDown(evt) {
@@ -238,12 +239,14 @@ export class Game {
             if (this.mute) {
                 this.mute = false;
                 if (this.gameView) {
+                    this.gameView.soundOn = true;
                     this.gameView.backgroundMusic1.play();
                 }
             } else {
                 this.mute = true;
                 this.battleSound.stop();
                 if (this.gameView) {
+                    this.gameView.soundOn = false;
                     this.gameView.backgroundMusic1.stop();
                 }
             }
@@ -323,14 +326,14 @@ export class Game {
     
     checkForBattle() {
         if (this.battle === true) {
-            if (!this.mute) {
+            if (this.gameView.soundOn) {
                 this.battleSound.play();
             }
         }
     }
 
     drawMusicIcon() {
-        if (!this.mute) {
+        if (this.gameView.soundOn) {
             this.ctx.shadowColor = "white";
             this.ctx.shadowBlur = 15;
         }
@@ -340,6 +343,7 @@ export class Game {
 
     muteMusic() {
         this.mute = true;
+        this.gameView.soundOn = false;
         this.battleSound.stop();
     }
 
@@ -448,8 +452,9 @@ export class Game {
 
     destroyGame() {
         cancelAnimationFrame(this.animation);
-        window.removeEventListener("mousedown",(evt) => this.mouseDown(evt));
-        window.removeEventListener("mouseup",(evt) => this.mouseUp(evt));
+        document.removeEventListener("mousedown", (evt) => this.mouseDown(evt));
+        document.removeEventListener("mouseup", (evt) => this.mouseUp(evt));
+        document.removeEventListener("pointermove", (evt) => this.checkForMouseOnPlanets(evt));
         this.battleSound.stop();
         this.gameView.game = null;
         this.gameView = null;

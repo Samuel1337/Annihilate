@@ -33,13 +33,14 @@ export class Planet {
         const imgIdx = Math.floor(Math.random() * (12));
         
         // creates planet image instance
-        this.image = this.game.gameView.ImageIndex.planet[imgIdx];
+        this.image = this.game.gameView.imageIndex.planet[imgIdx];
         this.frameIdx = 0;
         this.slowdownFrame = 0;
 
         // selects canvas and context
         this.canvas = document.querySelector("canvas");
         this.ctx = this.canvas.getContext("2d");
+        this.rect = this.canvas.getBoundingClientRect();
         
         // pointer variables
         this.mouseOn = false;
@@ -189,35 +190,36 @@ export class Planet {
 
     
     isMouseOn() {
-        const rect = this.canvas.getBoundingClientRect();
-        window.addEventListener("pointermove",(evt) => {
-            this.mousePos = [
-                evt.clientX - rect.left,
-                evt.clientY - rect.top
-            ];
-            // gets mouse's relative position to the canvas
-            
-            this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
-            this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
-            this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-            // calculates radial distance between planet and mouse
-
-            if (this.distance > this.radius) {
-                // no mouse. uses default color around planet
-                this.mouseOn = false;
-                this.color = this.defaultColor;
-                this.game.mouseOnElement[this.id] = "_";
-            } else {
-                // mouse over! highlights planet in yellow
-                this.mouseOn = true;
-                this.color = "yellow";
-                this.game.currentPlanet = this;
-                this.game.mouseOnElement[this.id] = this.id;
-            }           
-            
-        });
+        document.addEventListener("pointermove",(evt) => this.pointerMove(evt));
     }
     
+    pointerMove(evt) {
+        this.mousePos = [
+            evt.clientX - this.rect.left,
+            evt.clientY - this.rect.top
+        ];
+        // gets mouse's relative position to the canvas
+        
+        this.dx = (this.pos[0] + this.radius) - (this.mousePos[0]);
+        this.dy = (this.pos[1] + this.radius) - (this.mousePos[1]);
+        this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        // calculates radial distance between planet and mouse
+
+        if (this.distance > this.radius) {
+            // no mouse. uses default color around planet
+            this.mouseOn = false;
+            this.color = this.defaultColor;
+            this.game.mouseOnElement[this.id] = "_";
+        } else {
+            // mouse over! highlights planet in yellow
+            this.mouseOn = true;
+            this.color = "yellow";
+            this.game.currentPlanet = this;
+            this.game.mouseOnElement[this.id] = this.id;
+        }           
+        
+    }
+
     attack(targetPlanet) {
         // clears current attack if any and begins a new one
         if (this.attackBatch instanceof Attack) {
