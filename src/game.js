@@ -456,6 +456,7 @@ export class Game {
         document.removeEventListener("mouseup", (evt) => this.mouseUp(evt));
         document.removeEventListener("pointermove", (evt) => this.checkForMouseOnPlanets(evt));
         this.battleSound.stop();
+        this.aiCount = 0;
         this.gameView.game = null;
         this.gameView = null;
     }
